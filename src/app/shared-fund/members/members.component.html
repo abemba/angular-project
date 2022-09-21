@@ -1,0 +1,12 @@
+<div class="row">
+    <div class="col-4">
+        <div class="nav flex-column nav-pills">
+            <div class="nav-item" *ngFor="let option of menu">
+                <span class="nav-link" (click)="onClickUpdateState(option.label,option.component)" [class.active]="active==option.label">{{option.label}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-8">
+        <ng-template appSubView></ng-template>
+    </div>
+</div>

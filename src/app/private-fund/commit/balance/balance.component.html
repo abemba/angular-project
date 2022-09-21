@@ -1,0 +1,29 @@
+<h3 class="fs-5 mb-0">Balance</h3>
+<p class="mb-3">Set a desired amount that you would like to reach.</p>
+
+<ng-container [ngSwitch]="state">
+    <ng-container *ngSwitchCase="'confirm'">
+        <div class="list-group">
+            <div class="list-group-item">
+                <div class="list-group-item d-flex justify-content-between">
+                    <span>Target balance</span>
+                    <span>{{goal.target}}</span>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary">
+                    <span class="mdi mdi-currency-usd"></span>
+                </button>
+            </div>
+            <input (change)="hideFeedback()" [(ngModel)]="goal.target" class="form-control" type="number" name="amount" id="amount" step=".01">
+        </div>
+        <div>
+            <p [class.d-none]="!show_feedback" class="text-center text-danger mt-3">The target balance must exceed the current balance</p>
+            <button class="mt-3 form-control" mat-flat-button color="accent" [disabled]="isNotNumber()" (click)="confirm()">confirm</button>
+        </div>
+    </ng-container>
+</ng-container>

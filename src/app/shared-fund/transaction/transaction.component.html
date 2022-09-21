@@ -1,0 +1,22 @@
+<table class="table  table-hover">
+    <thead>
+        <tr>
+            <td>Date</td>
+            <td>Member</td>
+            <td>Description</td>
+            <td>Inflow</td>
+            <td>Outflow</td>
+            <td>Balance</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of getTransactions()">
+            <td>{{item.date | date}}</td>
+            <td>{{getName(item?.account_user_id)}}</td>
+            <td>{{getDescription(item.channel_id)}}</td>
+            <td class="text-success"> {{item.amount>0 ? '+ '+(item.amount/100|currency):''}}</td>
+            <td>{{item.amount<0 ? (item.amount/100|currency):''}}</td>
+            <td>{{item.balance/100 | currency}}</td>
+        </tr>
+    </tbody>
+</table>

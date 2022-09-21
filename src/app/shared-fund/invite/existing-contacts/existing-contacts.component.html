@@ -1,0 +1,7 @@
+<div class="form-group">
+    <label>Select contact</label>
+    <select class="form-control" multiple>
+        <option *ngFor="let item of contacts">{{item.name}} - ({{item.email}})</option>
+    </select>
+</div>
+<button mat-flat-button color="accent" class="mt-2">invite</button>

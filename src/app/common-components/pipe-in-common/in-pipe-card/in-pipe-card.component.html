@@ -1,0 +1,142 @@
+<div class="d-flex justify-content-center">
+    <div style="width: 100%;max-width: 600px;">
+        <ng-container [ngSwitch]="state">
+            <ng-container *ngSwitchCase="'nocard'">
+                <ng-container *ngTemplateOutlet="nocard"></ng-container>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'addcard'">
+                <ng-container *ngTemplateOutlet="addcard"></ng-container>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'addcardsuccess'">
+                <ng-container *ngTemplateOutlet="addcardsuccess"></ng-container>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'chargecard'">
+                <ng-container *ngTemplateOutlet="chargecard"></ng-container>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'chargecardconfirm'">
+                <ng-container *ngTemplateOutlet="chargecardconfirm"></ng-container>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'chargecardsuccess'">
+                <ng-container *ngTemplateOutlet="chargecardsuccess"></ng-container>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'chargecardfailed'">
+                <ng-container *ngTemplateOutlet="chargecardfailed"></ng-container>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>
+
+<ng-template #nocard>
+    <div class="text-center mt-4">
+        <span class="mdi mdi-emoticon-neutral-outline mdi-48px text-dark"></span>
+        <p class="mt-3 mb-3">You have 0 cards.</p>
+        <button mat-flat-button color="accent" (click)="updateState('addcard')">+ Add Card</button>
+    </div>
+</ng-template>
+
+<ng-template #addcard>
+    <h5 class="mb-3">Add card</h5>
+    <ngx-stripe-card
+        [options]="cardOptions"
+        [elementsOptions]="elementsOptions"
+        (change)="cardCompleted()"
+    ></ngx-stripe-card>
+    <p class="text-center text-danger" id="cardFeedback"></p>
+    <button mat-flat-button color="accent" class="form-control mt-4" type="button" (click)="updateState('addcardsuccess')">Add card</button>
+</ng-template>
+
+<ng-template #addcardsuccess>
+    <div class="text-center mt-3">
+        <span class="mdi mdi-48px mdi-check-circle-outline text-success"></span>
+        <p class="mt-3">Your card was successfully linked to your account.</p>
+        <button class="mt-3" mat-flat-button color="accent" (click)="updateState('chargecard')">continue</button>
+    </div>
+</ng-template>
+
+<ng-template #chargecard>
+    <div class="form-group">
+        <label>Amount</label>
+        <br>
+        <input class="form-control" type="number" name="amount">
+    </div>
+    <div class="form-group">
+        <br>
+        <label>Card</label>
+        <br>
+            <div class="form-check" *ngFor="let card of existing_cards; let i=index">
+                <input [checked]="i==0"  class="form-check-input" type="radio" name="card" id="card_{{i}}">
+                <label class="form-check-label" for="card_{{i}}">
+                    {{card.brand}}****{{card.last_4}} --- {{card.exp_month}}/{{card.exp_year}}
+                </label>
+            </div>
+        <button mat-flat-button (click)="updateState('addcard')">+ Add Card</button>
+    </div>
+    <div class="mt-4">
+        <div class="form-check">
+            <input id="recurringToggle" [(ngModel)]="recurring" class="form-check-input" type="checkbox" value="1" name="recurring">
+            <label class="form-check-label" for="recurringToggle">
+                Recurring
+            </label>
+        </div>
+        <div id="recurringForm" *ngIf="recurring">
+            <hr>
+            <label>Start Date</label>
+            <div class="input-group">
+                <input class="form-control" type="text"  name="start_date" id="datepicker" autocomplete="off">
+                <div class="input-group-append">
+                    <button disabled class="btn btn-outline-secondary"><i class="fas fa-calendar"></i></button>
+                </div>
+            </div>
+            <br>
+            <label>Frequency</label>
+            <select class="form-select" aria-label="Recurring frequency" name="frequency">
+                <option value="30" selected>Monthly</option>
+                <option value="14">Bi-weekly</option>
+                <option value="7">Weekly</option>
+                <option value="1">Daily</option>
+            </select>
+        </div>
+    </div>
+    <button  class="btn btn-warning form-control mt-5" type="submit" (click)="updateState('chargecardconfirm')">continue</button>
+</ng-template>
+
+<ng-template #chargecardconfirm>
+    <div class="list-group mt-3">
+        <div class="list-group-item d-flex justify-content-between">Beneficiary <strong>{{fund.nickname}}</strong></div>
+        <div class="list-group-item d-flex justify-content-between">Card <strong>{{selected_card}}</strong></div>
+        <div class="list-group-item d-flex justify-content-between">Amount <strong>{{transfer_amount | currency}}</strong></div>
+        <div class="list-group-item d-flex justify-content-between">Processing fee <strong>{{processing_fee | currency}}</strong></div>
+        <div class="list-group-item d-flex justify-content-between">Total <strong>{{charge_total | currency}}</strong></div>
+        <ng-container *ngIf="recurring">
+            <div class="list-group-item d-flex justify-content-between">Frequency
+                <strong>
+                    {{frequency_label}}
+                </strong>
+            </div>
+            <div class="list-group-item d-flex justify-content-between">Start date <strong>{{start_date | date:'longDate'}}</strong></div>
+        </ng-container>
+    </div>
+    <button class="form-control mt-3" mat-flat-button color="accent" (click)="updateState('chargecardsuccess')">confirm</button>
+</ng-template>
+
+<ng-template #chargecardsuccess>
+    <div class="text-center mt-3">
+        <span class="mdi mdi-48px mdi-check-circle-outline text-success"></span>
+        <p class="mt-3">Your card was successfully charged and the balance been added to your account.</p>
+        <button class="mt-3" mat-flat-button color="accent" (click)="updateState('chargecardfailed')">continue</button>
+    </div>
+</ng-template>
+
+<ng-template #chargecardfailed>
+    <div class="text-center mt-3">
+        <span class="mdi mdi-48px mdi-emoticon-confused-outline text-danger"></span>
+        <p class="mt-3">Your card does not have succifient balance.</p>
+        <button class="mt-3" mat-flat-button color="accent" (click)="updateState('chargecard')">try again</button>
+    </div>
+</ng-template>

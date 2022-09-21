@@ -1,0 +1,27 @@
+<div class="row" *ngIf="!PrivateFund?.hasActiveGoal(); else activegoal">
+    <div class="col-4">
+        <div class="nav nav-pills flex-column mb-3">
+            <div *ngFor="let item of menu" class="nav-item">
+                <a class="nav-link" [routerLink]="item.link" routerLinkActive="active" [routerLinkActiveOptions]="item.options">
+                    {{item.label}}
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-8">
+        <router-outlet name="commit"></router-outlet>
+    </div>
+</div>
+<ng-template #activegoal>
+    <div class="text-center fw-light mt-3">
+        <span class="fs-5">
+            You have a current goal.
+        </span>
+        <p>
+            <small>Type</small><br>
+            {{PrivateFund?.getGoalType()}}<br>
+            <small>Target</small><br>
+            {{PrivateFund?.getGoalType()=="BALANCE" ? (PrivateFund?.getGoalTarget() | currency):PrivateFund?.getGoalTarget()}}<br>
+        </p>
+    </div>
+</ng-template>

@@ -1,0 +1,30 @@
+<h3 class="fs-5 mb-0">Time</h3>
+<p class="mb-3">Select a desired date that you would like to go without touching the funds.</p>
+
+<ng-container [ngSwitch]="state">
+    <ng-container *ngSwitchCase="'confirm'">
+        <h4>Confirm date</h4>
+        <div class="card">
+            <div class="card-body">
+                <div class="list-group">
+                    <div class="list-group-item d-flex justify-content-between">
+                        <span>Date</span>
+                        <span>{{selected_date | date:'mediumDate'}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-success form-control mt-3" (click)="confirm()">confirm</button>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+        <h4>Select date</h4>
+        <div class="d-grid gap-3 mb-5">
+            <div class="text-center">
+                <div class="d-inline-block" style="max-width: 400px;width: 100%;">
+                    <mat-calendar [dateClass]="dateClass" [minDate]="min_date" [maxDate]="max_date" [(selected)]="selected_date"></mat-calendar>
+                </div>
+            </div>
+            <button (click)="showConfirm()" class="form-control mt-3" mat-flat-button color="accent" [disabled]="selected_date ? false:true">confirm</button>
+        </div>
+    </ng-container>
+</ng-container>

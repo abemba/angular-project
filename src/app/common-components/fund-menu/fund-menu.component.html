@@ -1,0 +1,40 @@
+<div class="mt-3">
+    <!-- 
+    <div *ngIf="fund?.isPrivate()" class="row">
+        <div class="col" style="text-align: right">
+            <a>
+                <i class="fas fa-{{fund?.hasActiveGoal() ? 'lock text-warning':'unlock'}} "></i>
+            </a>
+            <br> 
+            <span style="font-size: 10px">{{fund?.getLockStatement()}}</span>
+        </div>
+        <hr>
+    </div>
+    -->
+    <div class="row">
+        <div class="col">
+            <h2>
+                {{fund?.getFundName()}}
+                <br>
+                <small class="fw-lighter">Account #:{{fund?.getFundNumber()}}</small>
+            </h2>
+        </div>
+        <div class="col" style="text-align: right">
+            <h1>
+                {{fund?.getBalance() | currency}}
+            </h1>
+        </div>
+    </div>
+</div>
+<hr>
+
+<div class="menu" style="line-height: initial;">
+    <div *ngFor="let option of menu" class="menu-item" [routerLinkActiveOptions]="option.options? option.options : {}" [routerLink]="option.link" routerLinkActive="active">
+        <span class="mdi-36px {{option.icon}}" ></span>
+        <br>
+        <a>
+            {{option.label}}
+        </a>
+    </div>
+</div>
+<hr class="d-md-block d-none">

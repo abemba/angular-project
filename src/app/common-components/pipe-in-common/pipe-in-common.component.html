@@ -1,0 +1,31 @@
+<div class="row">
+    <div class="col-4">
+        <div class="nav nav-pills mb-3 flex-column">
+            <div *ngFor="let option of menu" class="nav-item" >
+                <!--
+                <span (click)="onClickUpdateState(option.label,option.elem)" [class.active]="active==option.label"  class="nav-link">
+                        <span class="mdi {{option.icon}}"></span>
+                    {{option.label}}
+                </span>
+                -->
+                <span (click)="setState(option.label)" [class.active]="active==option.label"  class="nav-link">
+                    {{option.label}}
+                </span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-8">
+        <ng-container [ngSwitch]="active">
+            <ng-container *ngSwitchCase="'e-Transfer'">
+                <app-in-pipe-emt [challenge]="fund?.getEmtPipeInChallenge()" [response]="fund?.getEmtPipeInResponse()"></app-in-pipe-emt>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Bank'">
+                <app-in-pipe-bank></app-in-pipe-bank>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Card'">
+                <app-in-pipe-card></app-in-pipe-card>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>

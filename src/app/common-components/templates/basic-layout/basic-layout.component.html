@@ -1,0 +1,10 @@
+<app-master-layout>
+    <!-- Header -->
+    <h2 header>
+        <ng-content select="[title]"></ng-content>
+    </h2>
+    <!-- Body -->
+    <ng-container content>
+        <ng-content select="[content]"></ng-content>
+    </ng-container>
+</app-master-layout>

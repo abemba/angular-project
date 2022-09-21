@@ -1,0 +1,47 @@
+<h4 class="fw-light">Bank Transfers</h4>
+<table class="table" *ngIf="pending.bank?.length>0; else nodata">
+    <thead>
+        <tr>
+            <td>Date</td>
+            <td>ID</td>
+            <td>From</td>
+            <td>To</td>
+            <td>State</td>
+            <td>Amount</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of pending.bank">
+            <td>{{item.created_at | date:'mediumDate'}}</td>
+            <td class="text-primary">PT{{pad(item.id)}}</td>
+            <td>{{bankTransferDirection(item.type,true)}}</td>
+            <td>{{bankTransferDirection(item.type,false)}}</td>
+            <td>{{bTransferState(item.state)}}</td>
+            <td>{{item.amount/100 | currency}}</td>
+        </tr>
+    </tbody>
+</table>
+<h4 class="mt-5 fw-light">Interac e-Transfer</h4>
+<table class="table" *ngIf="pending.emt?.length>0; else nodata" >
+    <thead>
+        <tr>
+            <td>Date</td>
+            <td>From</td>
+            <td>To</td>
+            <td>State</td>
+            <td>Amount</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of pending.emt">
+            <td>{{item.date | date:'mediumDate'}}</td>
+            <td>{{item.direction}}</td>
+            <td>{{item.state}}</td>
+            <td>{{item.amount | currency}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<ng-template #nodata>
+    <p class="text-center">You have no pending transactions.</p>
+</ng-template>

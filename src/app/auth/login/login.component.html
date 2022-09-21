@@ -1,0 +1,22 @@
+<div class="container vh-100 py-4 d-flex align-items-center justify-content-center">
+    <div class="row py-2 w-100 h-100 px-2 bg-white rounded-1 border shadow border-1" style="max-width: 600px; max-height: 500px;">
+        <div class="col-12 d-flex justify-content-center mt-3">
+            <img class="img" src="/assets/logo/algofame.svg" style="max-height: 135px ;"/>
+        </div>
+        <div class="col-12 px-4">
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" required class="form-control" id="email" name="email" [(ngModel)]="email" email #emailField="ngModel" [class.is-valid]="emailField.valid" [class.is-invalid]="emailField.invalid && !emailField.pristine" >
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" [(ngModel)]="password" id="password" required #passwordField="ngModel" [class.is-valid]="passwordField.valid" [class.is-invalid]="passwordField.invalid && !passwordField.pristine">
+            </div>
+            <div class="pt-3 d-flex justify-content-center">
+                <div style="max-width: 50%; width: 100%;">
+                    <button type="submit" class="btn btn-warning form-control" (click)="login()" [disabled]="passwordField.invalid && emailField.invalid && !emailField.pristine && !passwordField.pristine">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

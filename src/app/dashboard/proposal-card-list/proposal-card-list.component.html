@@ -1,0 +1,48 @@
+<h5 class="mt-4">Pending Proposals</h5>
+<hr>
+<div class="row">
+    <!-- 
+        <app-proposal-card *ngFor="let item of pending"></app-proposal-card>
+    -->
+    <p *ngIf="!(pending.length>0)" class="text-center">You currently have no pending proposals.</p>
+    <table *ngIf="pending.length>0" class="table">
+        <thead>
+        <tr>
+            <td>Date</td>
+            <td>Fund</td>
+            <td>Request by</td>
+            <td>Type</td>
+        </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of pending">
+                <td>{{item.date}}</td>
+                <td>{{item.fund.nickname}}</td>
+                <td>{{item.user.name}}</td>
+                <td>{{item.action_label}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<h5 class="mt-5">Proposals History</h5>
+<hr>
+<p *ngIf="history.length==0" class="text-center">Nothing so far.</p>
+<table *ngIf="history.length>0" class="table">
+    <thead>
+    <tr>
+        <td>Date</td>
+        <td>Fund</td>
+        <td>Request</td>
+        <td>Resolution</td>
+    </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of history" [class.table-danger]="!item.approved" [class.table-success]="item.approved">
+            <td>{{item.date}}</td>
+            <td>{{item.fund.nickname}}</td>
+            <td>{{item.action_label}}</td>
+            <td>{{item.approved ? "approved":"rejected"}}</td>
+        </tr>
+    </tbody>
+</table>

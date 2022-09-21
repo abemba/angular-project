@@ -1,0 +1,86 @@
+<app-basic-layout>
+    <ng-container title>
+        Dashboard
+    </ng-container>
+    
+    <div class="row mt-5" content>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    Private Funds
+                    <br>
+                    <br>
+                    <span style="font-size: 2rem;">
+                        {{private_fund_total|currency}}
+                    </span>
+                    <p style="font-weight: 100;">Total Value</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    Shared Funds
+                    <br>
+                    <br>
+                    <span style="font-size: 2rem;">
+                        {{shared_fund_total/100 | currency}}
+                    </span>
+                    <p style="font-weight: 100;">Total Value</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    Combined value
+                    <br>
+                    <br>
+                    <span style="font-size: 2rem;">
+                        {{shared_fund_total/100 + private_fund_total | currency}}
+                    </span>
+                    <p style="font-weight: 100;">Total Value</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 mt-4">
+            <div class="card">
+                <div class="card-body">
+                    Private Funds
+                    <br>
+                    <br>
+                    <span style="font-size: 2rem;">
+                        {{private_fund_count}}
+                    </span>
+                    <p style="font-weight: 100;">Total</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 mt-4">
+            <div class="card">
+                <div class="card-body">
+                    Shared Funds
+                    <br>
+                    <br>
+                    <span style="font-size: 2rem;">
+                        {{shared_fund_count}}
+                    </span>
+                    <p style="font-weight: 100;">Total</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 mt-4">
+            <div class="card">
+                <div class="card-body">
+                    Combined accounts
+                    <br>
+                    <br>
+                    <span style="font-size: 2rem;">
+                        {{shared_fund_count + private_fund_count}}
+                    </span>
+                    <p style="font-weight: 100;">Total</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-basic-layout>

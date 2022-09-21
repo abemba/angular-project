@@ -1,0 +1,36 @@
+<div class="card mb-5 mt-5">
+    <div class="card-body">
+        <span class="text-uppercase">
+            {{nickname}}
+        </span><br>
+        <div class="list-group list-group-flush">
+            <div class="list-group-item d-flex justify-content-between">
+                <div class="col-6">
+                    <span class="mdi mdi-bank-outline"></span>
+                    Balance
+                </div>
+                <div class="col-6 second-col">
+                    {{ accountBalance() | currency }}
+                </div>
+            </div>
+            <div class="list-group-item d-flex justify-content-between">
+                <div class="col-6">
+                    <span class="mdi {{ is_locked ? 'mdi-lock-outline':'mdi-lock-open-variant-outline'}}"></span>
+                    Commit
+                </div>
+                <div class="col-6 second-col">
+                    {{is_locked ? 'Active':'Inactive'}}
+                </div>
+            </div>
+            <div *ngIf="is_locked" class="list-group-item d-flex justify-content-between">
+                <div class="col-6">
+                    <span class="mdi mdi-target"></span>
+                    Target
+                </div>
+                <div class="col-6 second-col">
+                    {{ !isTimeLock() ? (lockBalance() | currency) : target }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

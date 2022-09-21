@@ -1,0 +1,32 @@
+<div class="card mb-5 mt-5">
+    <div class="card-body">
+        <span class="text-uppercase">
+            {{nickname}}
+        </span><br>
+        <div class="list-group list-group-flush">
+            <div class="list-group-item d-flex justify-content-between">
+                <div>
+                    <span class="mdi mdi-bank-outline"></span>
+                    Balance
+                </div>
+                <div>
+                    {{ accountBalance() | currency }}
+                </div>
+            </div>
+            <div class="list-group-item d-flex justify-content-between">
+                <div>
+                    <span class="mdi mdi-account-group-outline"></span>
+                    Members
+                </div>
+                <span>{{ members_count }}</span>
+            </div>
+            <div class="list-group-item d-flex justify-content-between">
+                <div>
+                    <span class="mdi mdi-bank-outline"></span>
+                    Policy 
+                </div>
+                <span class="text-capitalize">{{ policy }}</span>
+            </div>
+        </div>
+    </div>
+</div>

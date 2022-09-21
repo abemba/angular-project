@@ -1,0 +1,19 @@
+<app-basic-layout>
+    <ng-container title>My Account</ng-container>
+    <div class="row" content>
+        <div class="col-3">
+            <div class="nav nav-pills flex-column">
+                <div class="nav-item cursor-pointer" *ngFor="let item of menu">
+                    <span class="nav-link" routerLinkActive="active" [routerLink]="item.link" [routerLinkActiveOptions]="item.options">
+                        <span class="mdi {{item.icon}}"></span>
+                        {{item.label}}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-9">
+            <router-outlet name="myaccount"></router-outlet>
+        </div>
+    </div>
+</app-basic-layout>
+

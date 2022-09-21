@@ -1,0 +1,29 @@
+<app-basic-layout>
+    <ng-container title>Shared Funds</ng-container>
+    <ng-container content>
+        <table *ngIf="funds.length>0" class="table ">
+            <thead>
+            <tr>
+                <td>ID</td>
+                <td>Name</td>
+                <td>Members</td>
+                <td>Policy</td>
+                <td>Balance</td>
+            </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let fund of funds" >
+                    <td>{{fund.account_number}}</td>
+                    <td>
+                        <a routerLink="/shared-funds/{{fund.id}}" >
+                            {{fund.nickname}}
+                        </a>
+                    </td>
+                    <td>{{fund?.members?.length}}</td>
+                    <td>{{fund.policy.policy_translation[fund.policy.effective_policy.transfer]}}</td>
+                    <td>{{fund.balance/100 | currency}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </ng-container>
+</app-basic-layout>
