@@ -19,6 +19,7 @@ import { LoadingOverlayComponent } from './loading-overlay/loading-overlay.compo
 import { MasterLayoutComponent } from './templates/master-layout/master-layout.component';
 import { FundLayoutComponent } from './templates/fund-layout/fund-layout.component';
 import { BasicLayoutComponent } from './templates/basic-layout/basic-layout.component';
+import { LoadingIconDirective } from './loading-icon.directive';
 
 
 
@@ -38,7 +39,8 @@ import { BasicLayoutComponent } from './templates/basic-layout/basic-layout.comp
     LoadingOverlayComponent,
     MasterLayoutComponent,
     FundLayoutComponent,
-    BasicLayoutComponent
+    BasicLayoutComponent,
+    LoadingIconDirective
   ],
   imports: [
     CommonModule,
@@ -56,6 +58,7 @@ import { BasicLayoutComponent } from './templates/basic-layout/basic-layout.comp
     LoadingOverlayComponent,
     BasicLayoutComponent,
     FundLayoutComponent,
+    LoadingIconDirective,
   ]
 })
 export class CommonComponentsModule { }

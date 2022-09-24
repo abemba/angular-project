@@ -4,19 +4,22 @@
             <img class="img" src="/assets/logo/algofame.svg" style="max-height: 135px ;"/>
         </div>
         <div class="col-12 px-4">
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" required class="form-control" id="email" name="email" [(ngModel)]="email" email #emailField="ngModel" [class.is-valid]="emailField.valid" [class.is-invalid]="emailField.invalid && !emailField.pristine" >
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Password</label>
-                <input type="password" class="form-control" [(ngModel)]="password" id="password" required #passwordField="ngModel" [class.is-valid]="passwordField.valid" [class.is-invalid]="passwordField.invalid && !passwordField.pristine">
-            </div>
-            <div class="pt-3 d-flex justify-content-center">
-                <div style="max-width: 50%; width: 100%;">
-                    <button type="submit" class="btn btn-warning form-control" (click)="login()" [disabled]="passwordField.invalid && emailField.invalid && !emailField.pristine && !passwordField.pristine">Login</button>
+            <form>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input autocomplete="email" autofocus type="email" required class="form-control" id="email" name="email" [(ngModel)]="email" email #emailField="ngModel" [ngClass]="getValidationClass(emailField)" >
                 </div>
-            </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input (keyup)="clearMsg()" autocomplete="current-password" type="password" class="form-control" [(ngModel)]="password" id="current-password" name="current-password" required #passwordField="ngModel" [ngClass]="getValidationClass(passwordField)">
+                </div>
+                <p class="text-center text-danger" [class.d-none]="!showAuthErrorMsg">{{message}}</p>
+                <div class="pt-3 d-flex justify-content-center">
+                    <div style="max-width: 50%; width: 100%;">
+                        <button (keyup)="clearMsg()" type="submit" class="btn btn-warning form-control" (click)="login()" [disabled]="passwordField.invalid || emailField.invalid" [appLoadingIcon]="loading">Login</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
