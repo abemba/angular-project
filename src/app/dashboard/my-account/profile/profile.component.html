@@ -1,20 +1,20 @@
 <h3>My Profile</h3>
 <div class="form-group">
     <label>First name</label>
-    <input class="form-control" type="text" >
+    <input class="form-control" [(ngModel)]="data.first_name" type="text" >
 </div>
 <div class="form-group mt-3">
     <label>Last name</label>
-    <input class="form-control" type="text" >
+    <input class="form-control" [(ngModel)]="data.last_name" type="text" >
 </div>
 <div class="form-group mt-3">
     <label>Phone</label>
-    <input class="form-control" type="text" >
+    <input class="form-control" [(ngModel)]="data.phone_number" type="text" >
 </div>
 <div class="form-group mt-3">
     <label>Address</label>
-    <input class="form-control" type="text" >
+    <input class="form-control" type="text" [(ngModel)]="data.address" >
 </div>
 <div class="d-flex justify-content-end mt-3">
-    <button class="" mat-flat-button color="accent">Update</button>
+    <button class="" mat-flat-button color="accent" [appLoadingIcon]="loading" (click)="update()">Update</button>
 </div>

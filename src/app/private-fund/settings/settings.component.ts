@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from 'src/app/services/common.service';
-import { PrivateFundItem, PrivateFundService } from 'src/app/services/private-fund.service';
+import { PrivateFund, PrivateFundService } from 'src/app/services/private-fund.service';
 
 @Component({
   selector: 'app-settings',
@@ -9,7 +9,7 @@ import { PrivateFundItem, PrivateFundService } from 'src/app/services/private-fu
 })
 export class SettingsComponent implements OnInit {
 
-  public fund!: PrivateFundItem | null;
+  public fund!: PrivateFund | null;
   public fundName: string = ''
 
   constructor(privateFundService: PrivateFundService, private common:CommonService) {
@@ -22,7 +22,6 @@ export class SettingsComponent implements OnInit {
 
 
   updateName(){
-    this.common.turnOnLoadingOverlay()
     this.fund?.updateFundName(this.fundName).subscribe(d=>{
       this.common.reloadPage()
     })

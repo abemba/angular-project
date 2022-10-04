@@ -6,6 +6,7 @@ import { AuthTokenTypes } from '../utils/token-types';
 import * as moment from 'moment';
 // @ts-ignore
 import webStorage from 'webstoragejs';
+import { GrantService } from './grant.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,9 @@ import webStorage from 'webstoragejs';
 export class AuthService {
 
   private auth_token: string = '';
-  private authStore: any = webStorage({ namespace: 'algofame::auth' });
+  protected authStore: any = webStorage({ namespace: 'algofame::auth' });
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private grant: GrantService) {
     this.restoreAuthToken()
   }
 
@@ -34,6 +35,7 @@ export class AuthService {
   }
 
   public logout() {
+    this.grant.logout();
     this.authStore.clear()
     this.auth_token = '';
   }
@@ -49,4 +51,17 @@ export class AuthService {
       this.setAuthToken(token);
     }
   }
+
+  public getAuthToken () {
+    return this.auth_token;
+  }
+
+  public updateEmail (newEmail: string) {
+    return this.http.post(Endpoints.AUTH.UPDATE_EMAIL,{email: newEmail})
+  }
+  
+  public updatePassword (data: any) {
+    return this.http.post(Endpoints.AUTH.UPDATE_PASSWORD,data)
+  }
+
 }

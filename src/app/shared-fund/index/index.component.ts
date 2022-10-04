@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedFundItem, SharedFundService } from 'src/app/services/shared-fund.service';
+import { SharedFund, SharedFundService } from 'src/app/services/shared-fund.service';
 import { Fund } from 'src/app/utils/fund';
 import { FundMenuItem } from 'src/app/utils/fund-menu-item';
 
@@ -10,7 +10,7 @@ import { FundMenuItem } from 'src/app/utils/fund-menu-item';
 })
 export class IndexComponent implements OnInit {
 
-  fund: SharedFundItem | null = null;
+  fund: SharedFund | null = null;
   menu: FundMenuItem[] = 
   [
     {label:"Transactions", "icon":"mdi mdi-history", link:['./'], options:{exact:true} },

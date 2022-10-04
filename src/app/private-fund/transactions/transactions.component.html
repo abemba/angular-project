@@ -24,39 +24,56 @@
         </thead>
         <tbody>
             <tr *ngFor="let item of transactions">
-                <td>{{item.date}}</td>
-                <td class="text-primary cursor-pointer link" (click)="onClickShowItem(item)">TR{{pad(item.id)}}</td>
-                <td>{{description(item.channel_id)}}</td>
-                <td class="text-success">{{item.amount > 0 ? '+ '+(item.amount/100|currency):''}}</td>
-                <td>{{item.amount < 0 ? (item.amount/100|currency):''}}</td>
-                <td>{{item.balance/100|currency}}</td>
+                <td>{{item.getDate() | date}}</td>
+                <td class="text-primary cursor-pointer link" (click)="onClickShowItem(item)">{{item.getTransactionNumber()}}</td>
+                <td>{{ item.getDescription() }}</td>
+                <td class="text-success">
+                    <ng-container *ngIf="item.isDeposit()">
+                        {{ item.getSign() }} 
+                        {{ item.getAmount().inDollarsAbsolute() | currency }}
+                    </ng-container>
+                </td>
+                <td>
+                    <ng-container *ngIf="item.isWithdraw()">
+                        {{ item.getSign() }} 
+                        {{ item.getAmount().inDollarsAbsolute() | currency }}
+                    </ng-container>
+                </td>
+                <td>{{item.getBalance().inDollars() | currency}}</td>
             </tr>
         </tbody>
     </table>
 </ng-template>
 
 <ng-template #transactiondetail>
-    <h4 class="text-capitalize fs-4 fw-lighter">{{description(active_item.channel_id)}}</h4>
+    <h4 class="text-capitalize fs-4 fw-lighter">{{ selected_transaction.getDescription() }}</h4>
     <div class="list-group mt-4">
         <div class="list-group-item d-flex justify-content-between">
             <span>Amount</span>
-            <span> {{abs(active_item.amount/100) | currency}} </span>
+            <span> {{ selected_transaction.getAmount().inDollarsAbsolute() | currency }} </span>
         </div>
         <div class="list-group-item d-flex justify-content-between">
             <span>Type</span>
-            <span>{{active_item.amount>0 ? 'Transfer-in':'Transfer-out' }}</span>
+            <span>{{ selected_transaction.getAmount().inCents() > 0 ? 'Transfer-in':'Transfer-out' }}</span>
         </div>
         <div class="list-group-item d-flex justify-content-between">
             <span>Method</span>
-            <span>{{description(active_item.channel_id)}}</span>
+            <span>{{ selected_transaction.getDescription() }}</span>
         </div>
         <div class="list-group-item d-flex justify-content-between">
             <span>Transaction ID</span>
-            <span> TR{{pad(active_item.id)}} </span>
+            <span>{{ selected_transaction.getTransactionNumber() }} </span>
         </div>
+        <ng-container *ngIf="selectedTransactionDetails | async as records">
+            <div class="mt-3"></div>
+            <div *ngFor="let record of records" class="list-group-item d-flex justify-content-between">
+                <span>{{ record[0] }}</span>
+                <span>{{ record[1] }}</span>
+            </div>
+        </ng-container>
     </div>
     <div class="mt-3">
-        <button (click)="onClickUpdateState('transactionslist')" color="accent" mat-flat-button>back</button>
+        <button (click)="onClickUpdateState('transactionslist')" color="accent" mat-flat-button>Back</button>
     </div>
 </ng-template>
 

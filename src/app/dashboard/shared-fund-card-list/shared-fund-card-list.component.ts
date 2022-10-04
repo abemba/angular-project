@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedFundService } from 'src/app/services/shared-fund.service';
+import { SharedFund, SharedFundService } from 'src/app/services/shared-fund.service';
 
 @Component({
   selector: 'app-shared-fund-card-list',
@@ -8,11 +8,16 @@ import { SharedFundService } from 'src/app/services/shared-fund.service';
 })
 export class SharedFundCardListComponent implements OnInit {
 
+  public funds: SharedFund[] = [];
   constructor(private sharedFundService: SharedFundService) {
-    sharedFundService.getList().subscribe((data)=> {this.funds = Object.values(data); console.log(data)})
+    sharedFundService
+    .getList()
+    .subscribe(
+      (list)=> {
+        this.funds = list
+      })
   }
 
-  public funds: any[] = [];
 
   ngOnInit(): void {
   }

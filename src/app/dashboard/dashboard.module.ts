@@ -19,6 +19,7 @@ import { PasswordComponent } from './my-account/password/password.component';
 import { FundCategoryComponent } from './fund-category/fund-category.component';
 import { FundArchiveComponent } from './my-account/fund-archive/fund-archive.component';
 import { CommonComponentsModule } from '../common-components/common-components.module';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = 
 [
@@ -60,7 +61,8 @@ const routes: Routes =
     CommonModule,
     RouterModule.forChild(routes),
     MatButtonModule,
-    CommonComponentsModule
+    CommonComponentsModule,
+    FormsModule
   ],
   exports: [
     IndexComponent,

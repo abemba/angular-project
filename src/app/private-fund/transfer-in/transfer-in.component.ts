@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PrivateFundItem, PrivateFundService } from 'src/app/services/private-fund.service';
+import { PrivateFund, PrivateFundService } from 'src/app/services/private-fund.service';
 
 @Component({
   selector: 'app-transfer-in',
@@ -7,7 +7,7 @@ import { PrivateFundItem, PrivateFundService } from 'src/app/services/private-fu
   styleUrls: ['./transfer-in.component.scss']
 })
 export class TransferInComponent implements OnInit {
-  public fund!: PrivateFundItem
+  public fund!: PrivateFund
   constructor( privateFundService: PrivateFundService) {
     privateFundService.getFundFromPath().subscribe(data=>{
       this.fund = data

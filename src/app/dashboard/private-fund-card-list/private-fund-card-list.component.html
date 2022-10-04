@@ -14,14 +14,14 @@
             </thead>
             <tbody>
                 <tr *ngFor="let fund of funds" >
-                    <td>{{fund.account_number}}</td>
+                    <td>{{ fund.getFundNumber() }}</td>
                     <td>
-                        <a routerLink="/private-funds/{{fund.id}}">
-                            {{fund.nickname}}
+                        <a routerLink="/private-funds/{{ fund.getId() }}">
+                            {{ fund.getFundName() }}
                         </a>
                     </td>
-                    <td>{{fund.balance | currency}}</td>
-                    <td>{{fund.latest_lock && fund.locked ? (fund.lock_mechanism=="TIME" ? fund.latest_lock.condition_value:(fund.latest_lock.condition_value/100|currency)) : 'N/A'}}</td>
+                    <td>{{ fund.getBalance() | currency }}</td>
+                    <td>{{ fund.hasActiveGoal() ? fund.getGoalType() : 'N/A' }}</td>
                 </tr>
             </tbody>
         </table>

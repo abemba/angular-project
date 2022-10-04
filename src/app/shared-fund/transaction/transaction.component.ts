@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedFundService } from 'src/app/services/shared-fund.service';
+import { Transaction } from 'src/app/services/fund.service';
+import { SharedFund, SharedFundService } from 'src/app/services/shared-fund.service';
 import { sortTransaction, transactionDescription } from 'src/app/utils/functions';
 import { TransactionType } from 'src/app/utils/transaction-type';
 
@@ -10,12 +11,14 @@ import { TransactionType } from 'src/app/utils/transaction-type';
 })
 export class TransactionComponent implements OnInit {
 
-  public transactions: any[] =[];
-  public members: any = null
+  public transactions: Transaction[] = [];
+  public members: any = null;
+  public fund: SharedFund | null = null;
   constructor(privateFundService:SharedFundService) {
     privateFundService.getFundFromPath().subscribe(
       fund=>{
-        this.transactions = fund.getRawTransactions()
+        this.fund = fund;
+        this.transactions = fund.getTransactions()
         this.members = fund.getMembers() 
       }
     )
@@ -26,13 +29,5 @@ export class TransactionComponent implements OnInit {
 
   getName(account_user_id:number){
     return this?.members[account_user_id]?.user?.name
-  }
-
-  getTransactions(){
-    return sortTransaction(this.transactions);
-  }
-
-  getDescription(type:TransactionType){
-    return transactionDescription(type)
   }
 }

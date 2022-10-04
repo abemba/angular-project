@@ -1,6 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PrivateFundItem, PrivateFundService } from 'src/app/services/private-fund.service';
+import { Observable } from 'rxjs';
+import { Transaction } from 'src/app/services/fund.service';
+import { PrivateFund, PrivateFundService } from 'src/app/services/private-fund.service';
 import { padZeros, transactionDescription } from 'src/app/utils/functions';
 import { TransactionType } from 'src/app/utils/transaction-type';
 
@@ -11,16 +14,17 @@ import { TransactionType } from 'src/app/utils/transaction-type';
 })
 export class TransactionsComponent implements OnInit {
 
-  public transactions: any[] = []
-
   state: String = ""
-  public active_item:any = {}
 
+  public selectedTransactionDetails: Observable<any> | null = null;
+  
+  public transactions: Transaction[] = []
+  public selected_transaction!: Transaction;
   public transfer_in_link = [{outlets:{"private-fund":["transfer-in"]}}]
 
-  constructor(privateFundService:PrivateFundService) {
+  constructor(privateFundService:PrivateFundService, private http: HttpClient) {
     privateFundService.getFundFromPath().subscribe((fund)=>{
-      this.transactions = fund.getRawTransactions()
+      this.transactions = fund.getTransactions()
     }) ;
   }
 
@@ -31,21 +35,10 @@ export class TransactionsComponent implements OnInit {
     this.state = state
   }
 
-  onClickShowItem(item:any){
-    this.active_item = item;
+  onClickShowItem(selected:Transaction){
+    this.selectedTransactionDetails = selected.fetchFormattedDetails() 
+    this.selected_transaction = selected;
     this.onClickUpdateState('transactiondetail')
-  }
-
-  pad(id:string){
-    return padZeros(id)
-  }
-
-  abs(number:number){
-    return Math.abs(number);
-  }
-
-  description(type:TransactionType){
-    return transactionDescription(type)
   }
 
 }

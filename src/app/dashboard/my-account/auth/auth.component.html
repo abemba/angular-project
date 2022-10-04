@@ -1,8 +1,12 @@
 <h3>Email</h3>
 <div class="form-group mt-3">
-    <label>Current email</label>
-    <input class="form-control" type="email" value="john.doe@example.com" disabled>
+    <label>New email</label>
+    <input (keyup)="validate(email1,email2)" class="form-control" type="email" [(ngModel)]="form.email1" required email #email1="ngModel" placeholder="john.doe@example.com">
+</div>
+<div class="form-group mt-3">
+    <label>Repeat new email</label>
+    <input [class.is-valid]="formReady" [class.is-invalid]="!formReady && !email2.pristine" (keyup)="validate(email1,email2)" class="form-control exclude" type="email" [(ngModel)]="form.email2" #email2="ngModel" required email placeholder="john.doe@example.com">
 </div>
 <div class="d-flex justify-content-end mt-3">
-    <button class="" mat-flat-button color="accent">Update</button>
+    <button class="" mat-flat-button color="accent" [disabled]="!formReady" [appLoadingIcon]="updating" (click)="update()">Set new email</button>
 </div>

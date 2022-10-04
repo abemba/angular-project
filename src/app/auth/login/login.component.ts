@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import { CommonService } from 'src/app/services/common.service';
 import { getValidationClass } from 'src/app/utils/functions/validators';
 
 @Component({
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
   loading: boolean = false;
 
 
-  constructor(private auth: AuthService, private router: Router) { }
+  constructor(private auth: AuthService, private common: CommonService) { }
 
   ngOnInit(): void {
   }
@@ -28,7 +29,7 @@ export class LoginComponent implements OnInit {
     this.auth.login(this.email,this.password).subscribe(
       {
         complete: ()=> {
-          this.router.navigate(['/'])
+          this.common.loadSetupData()
         },
         error: (error) => {
           this.showAuthErrorMsg = true;

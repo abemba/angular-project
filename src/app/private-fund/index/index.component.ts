@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PrivateFundItem, PrivateFundService } from 'src/app/services/private-fund.service';
+import { PrivateFund, PrivateFundService } from 'src/app/services/private-fund.service';
 import { Fund } from 'src/app/utils/fund';
 
 @Component({
@@ -10,7 +10,7 @@ import { Fund } from 'src/app/utils/fund';
 })
 export class IndexComponent implements OnInit {
 
-  public fund!: PrivateFundItem | null
+  public fund!: PrivateFund | null
   public menu: any[] = 
   [
     {label:"Transactions", "icon":"mdi mdi-history", link:["./"], options:{exact:true} },

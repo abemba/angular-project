@@ -10,9 +10,8 @@ export class InPipeEmtComponent implements OnInit {
 
   @Input() challenge!:  String | undefined;
   @Input() response!: String | undefined
-  email!: String  | undefined
-  constructor(commonService:CommonService) { 
-    this.email = commonService.getEmtDomain();
+  @Input() email!: String  | undefined
+  constructor() { 
   }
 
 

@@ -10,13 +10,13 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let item of getTransactions()">
-            <td>{{item.date | date}}</td>
-            <td>{{getName(item?.account_user_id)}}</td>
-            <td>{{getDescription(item.channel_id)}}</td>
-            <td class="text-success"> {{item.amount>0 ? '+ '+(item.amount/100|currency):''}}</td>
-            <td>{{item.amount<0 ? (item.amount/100|currency):''}}</td>
-            <td>{{item.balance/100 | currency}}</td>
+        <tr *ngFor="let item of transactions">
+            <td>{{ item.getDate() | date }}</td>
+            <td>{{ fund?.findMemberByGridAccountUserId(item.getGridAccountUserId())?.getFullname() }}</td>
+            <td>{{ item.getDescription() }}</td>
+            <td class="text-success"> {{ item.isDeposit() ? '+':''  }} {{ item.isDeposit() ? (item.getAmount().inDollars()|currency):''}}</td>
+            <td>{{ item.isWithdraw() ? '-':'' }} {{ item.isWithdraw() ? (item.getAmount().inDollarsAbsolute()|currency):'' }}</td>
+            <td>{{item.getBalance().inDollars() | currency}}</td>
         </tr>
     </tbody>
 </table>

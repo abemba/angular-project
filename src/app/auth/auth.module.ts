@@ -4,13 +4,15 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { FormsModule } from '@angular/forms';
 import { CommonComponentsModule } from '../common-components/common-components.module';
+import { GrantComponent } from './grant/grant.component';
 
 
 
 @NgModule({
   declarations: [
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    GrantComponent
   ],
   imports: [
     CommonModule,
@@ -18,7 +20,8 @@ import { CommonComponentsModule } from '../common-components/common-components.m
     CommonComponentsModule
   ],
   exports: [
-    LoginComponent
+    LoginComponent,
+    GrantComponent
   ]
 })
 export class AuthModule { }

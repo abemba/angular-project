@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from './services/auth.service';
+import { CommonService } from './services/common.service';
+import { GrantService } from './services/grant.service';
 
 @Component({
   selector: 'app-root',
@@ -18,5 +20,9 @@ export class AppComponent {
     {label:"My Account", link:"/my-account",  option:{exact:false}, icon:"mdi-account-cog-outline"},
   ]
 
-  constructor (public auth: AuthService) {}
+  constructor (public auth: AuthService, private common: CommonService, public grantService: GrantService) {
+    if(auth.isAuthenticated()){
+      common.loadSetupData()
+    }
+  }
 }

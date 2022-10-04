@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from 'src/app/services/common.service';
+import { LoadingOverlayService } from 'src/app/services/loading-overlay.service';
 
 @Component({
   selector: 'app-loading-overlay',
@@ -8,13 +9,13 @@ import { CommonService } from 'src/app/services/common.service';
 })
 export class LoadingOverlayComponent implements OnInit {
 
-  constructor(public common:CommonService) { }
+  constructor(public overlay:LoadingOverlayService) { }
 
   ngOnInit(): void {
   }
 
   showOverlay(){
-    return this.common.isLoadingInitData() || this.common.canShowLoadingOverlay()
+    return this.overlay.canShowLoadingOverlay()
   }
 
 }

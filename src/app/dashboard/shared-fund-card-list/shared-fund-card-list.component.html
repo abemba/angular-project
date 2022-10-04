@@ -13,15 +13,15 @@
             </thead>
             <tbody>
                 <tr *ngFor="let fund of funds" >
-                    <td>{{fund.account_number}}</td>
+                    <td>{{ fund.getFundNumber() }}</td>
                     <td>
-                        <a routerLink="/shared-funds/{{fund.id}}" >
-                            {{fund.nickname}}
+                        <a routerLink="/shared-funds/{{fund.getId()}}" >
+                            {{ fund.getFundName() }}
                         </a>
                     </td>
-                    <td>{{fund?.members?.length}}</td>
-                    <td>{{fund.policy.policy_translation[fund.policy.effective_policy.transfer]}}</td>
-                    <td>{{fund.balance/100 | currency}}</td>
+                    <td>{{ fund.getMemberCount() }}</td>
+                    <td>{{ fund.getPolicy() }}</td>
+                    <td>{{fund.getBalance() | currency}}</td>
                 </tr>
             </tbody>
         </table>

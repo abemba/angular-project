@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
 import * as moment from 'moment';
 import { CommonService } from 'src/app/services/common.service';
-import { PrivateFundItem, PrivateFundService } from 'src/app/services/private-fund.service';
+import { PrivateFund, PrivateFundService } from 'src/app/services/private-fund.service';
 import { GoalType } from 'src/app/utils/goal-type';
 
 @Component({
@@ -25,7 +25,7 @@ export class TimeComponent implements OnInit {
   }
   
   
-  private fund!: PrivateFundItem
+  private fund!: PrivateFund
   
   constructor(private privateFund:PrivateFundService, private common:CommonService) {
     this.privateFund.getFundFromPath().subscribe(fund=>{this.fund=fund})
@@ -39,7 +39,6 @@ export class TimeComponent implements OnInit {
   }
 
   confirm(){
-    this.common.turnOnLoadingOverlay()
     this.fund.setGoal({type:GoalType.TIME, target:this.selected_date.format("MMM D, YYYY")}).subscribe(()=>{
       this.common.reloadPage()
     })

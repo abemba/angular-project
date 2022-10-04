@@ -2,83 +2,100 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { Endpoints } from '../utils/endpoints';
 import { Links } from '../utils/links';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommonService {
 
-  private init_data: any=null;
-  private init_data_loaded=false;
-  private data_relaoding=false;
-  private show_loading_overlay = false;
-  constructor(private http: HttpClient, private router:Router) {
-    this.loadData()
-  }
-
-  private commonObserver = new Observable((observer)=>{
+  
+  private setupData: any = null;
+  private setupDataReady: boolean = false;
+  private setupDataInProgress = false;
+  
+  private setupObserver = new Observable<any>((observer)=>{
     let check = ()=>{
-      if(!this.init_data_loaded){
+      if(!this.setupDataReady){
         setTimeout(check,100)
       }else{
-        observer.next(this.init_data)
+        observer.next(this.setupData)
         observer.complete()
       }  
     }
-
     check()
   })
+  
+  constructor (private http: HttpClient) {}
 
-  private loadData(){
-    this.http.get<any>(Links.COMMON_DATA).subscribe(data=>{this.init_data=data; this.init_data_loaded=true; this.data_relaoding=false;})
-  }
+  /**
+   * Fetches data for initialization
+   */
+  private fetchSetupData() {
+    if(!this.setupDataInProgress){
+      // flags
+      this.setupDataReady = false;
+      this.setupDataInProgress = true;
+      
+      this.http.get<any>(Endpoints.INIT.DATA)
+      .subscribe(
+        data => {
+          this.setupData = data;
 
-  public reloadCommonData(){
-    this.data_relaoding = true;
-    this.loadData();
-  }
-
-  public  getInitData(): Observable<any> {
-    return this.commonObserver;
-  }
-
-  public isLoadingInitData(){
-    return this.data_relaoding || !this.init_data_loaded;
-  }
-
-  public canShowLoadingOverlay(): boolean{
-    return this.show_loading_overlay;
-  }
-  public turnOnLoadingOverlay(){
-    this.show_loading_overlay=true;
-  }
-  public turnOffLoadingOverlay(){
-    setTimeout(()=>this.show_loading_overlay=false)
-  }
-  public reloadPage(){
-    window.location.reload()
+          // reset flags
+          this.setupDataReady = true;
+          this.setupDataInProgress = false;
+        })
+    }
   }
 
-  public getCards():Observable<any>{
+  /**
+   * Provides setup data
+   * @returns 
+   */
+  public loadSetupData () {
+    if(!this.setupData){
+      this.fetchSetupData();
+    }
+
+    return this.setupObserver
+  }
+
+  /**
+   * Profile Data
+   * @returns 
+   */
+  public getProfile () {
     return new Observable((observer)=>{
-      this.getInitData().subscribe(data=>{
-        observer.next(data.fund_pipes?.card_pipe)
+      this.setupObserver.subscribe(data=>{
+        observer.next(data.profile)
         observer.complete()
       })
     });
   }
+  
 
-  public getCard(card_token:string):Observable<any>{
+  /**
+   * Updates profile
+   * @param body 
+   * @returns 
+   */
+  public updateProfile (body: any) {
+    return this.http.post(Endpoints.PROFILE.UPDATE,body)
+  }
+
+  public reloadPage () {
+
+  }
+
+  public getCards () {
     return new Observable((observer)=>{
-      this.getCards().subscribe(cards=>{
-        observer.next(cards[card_token])
+      this.setupObserver.subscribe(data=>{
+        observer.next(data?.cards)
         observer.complete()
       })
     });
-  }
-
-  public getEmtDomain(){
-    return "emt@algofame.com";
   }
 }

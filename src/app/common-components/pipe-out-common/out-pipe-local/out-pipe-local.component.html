@@ -21,17 +21,19 @@
 <ng-template #transfer>
     <div class="form-group">
         <label>Amount</label>
-        <input class="form-control" type="text" >
+        <input [(ngModel)]="amount" #amountRef="ngModel"  class="form-control" type="number" required [max]="maximum">
     </div>
     <div class="form-group mt-3">
         <label>Target Account</label>
-        <select class="form-control">
-            <option *ngFor="let account of accounts">
-                {{account.label}} - {{account.account_number}}
-            </option>
+        <select required [(ngModel)]="target" #targetRef="ngModel" class="form-control">
+            <ng-container *ngFor="let account of accounts">
+                <option [value]="account.getId()" *ngIf="!account.is(activeAccount?.getId() ?? 0)">
+                    {{account.getFundName()}} - {{account.getFundNumber()}}
+                </option>
+            </ng-container>
         </select>
     </div>
-    <button mat-flat-button color="accent" class="form-control mt-4 mb-4" (click)="onClickUpdateState('transferconfirm')">Transfer</button>
+    <button [appLoadingIcon]="isLoading" [disabled]="targetRef.invalid || (amountRef.invalid || amountRef.pristine)" mat-flat-button color="accent" class="form-control mt-4 mb-4" (click)="moveMoney()">Transfer</button>
 </ng-template>
 
 <ng-template #transferconfirm>

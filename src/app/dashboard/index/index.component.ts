@@ -16,15 +16,15 @@ export class IndexComponent implements OnInit {
 
   constructor(private privateFundService:PrivateFundService, private sharedFundService:SharedFundService) {
     // Private Funds
-    privateFundService.getListArray().subscribe(data=>{
-      this.private_fund_count = data.length
-      data.forEach(val=>{ this.private_fund_total=this.private_fund_total+val.balance })
+    privateFundService.getList().subscribe(list=>{
+      this.private_fund_count = list.length
+      this.private_fund_total = list.reduce( (sum, fund) => sum + fund.getBalance(), 0)
     })
 
     // Shared Funds
-    sharedFundService.getListArray().subscribe(data=>{
-      this.shared_fund_count = data.length
-      data.forEach(val=>{ this.shared_fund_total=this.shared_fund_total+val.balance })
+    sharedFundService.getList().subscribe(list=>{
+      this.shared_fund_count = list.length
+      this.shared_fund_total = list.reduce((prev,fund) => prev+fund.getBalance(), 0)
     })
   }
 

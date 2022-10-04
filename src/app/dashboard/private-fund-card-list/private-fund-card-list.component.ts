@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PrivateFundService } from 'src/app/services/private-fund.service';
+import { PrivateFund, PrivateFundService } from 'src/app/services/private-fund.service';
 
 @Component({
   selector: 'app-private-fund-card-list',
@@ -8,7 +8,7 @@ import { PrivateFundService } from 'src/app/services/private-fund.service';
 })
 export class PrivateFundCardListComponent implements OnInit {
 
-  public funds: any[] = [];
+  public funds: PrivateFund[] = [];
   constructor(private privateFundService: PrivateFundService) {
     this.setFunds()
   }
@@ -17,8 +17,10 @@ export class PrivateFundCardListComponent implements OnInit {
   }
   
   setFunds(){
-    this.privateFundService.getList().subscribe((data) => {
-      this.funds = Object.values(data)
+    this.privateFundService
+    .getList()
+    .subscribe((list) => {
+      this.funds = list
     })
   }
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from 'src/app/services/common.service';
-import { PrivateFundItem, PrivateFundService } from 'src/app/services/private-fund.service';
+import { PrivateFund, PrivateFundService } from 'src/app/services/private-fund.service';
 import { FundGoal } from 'src/app/utils/fund-goal';
 import { GoalType } from 'src/app/utils/goal-type';
 
@@ -15,7 +15,7 @@ export class BalanceComponent implements OnInit {
 
   public show_feedback = false;
 
-  public fund!:PrivateFundItem
+  public fund!:PrivateFund
 
   public state:string = ''
 
@@ -50,7 +50,6 @@ export class BalanceComponent implements OnInit {
   }
 
   public confirm(){
-    this.common.turnOnLoadingOverlay()
       this.fund.setGoal(this.goal).subscribe((data)=>{
         this.common.reloadPage()
       })
