@@ -21,7 +21,7 @@
                     </td>
                     <td>{{ fund.getMemberCount() }}</td>
                     <td>{{ fund.getPolicy() }}</td>
-                    <td>{{fund.getBalance() | currency}}</td>
+                    <td>{{fund.getBalance().inDollars() | currency}}</td>
                 </tr>
             </tbody>
         </table>

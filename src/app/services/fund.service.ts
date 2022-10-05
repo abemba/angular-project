@@ -167,8 +167,8 @@ export class Fund implements FundInterface{
    * Gets the current balance of the fund
    * @returns 
    */
-  getBalance(): number {
-    return this?.fundData?.balance/100
+  getBalance(): Figure {
+    return new Figure(this?.fundData?.balance);
   }
 
   /**

@@ -36,5 +36,8 @@ export class GrantComponent implements OnInit {
     this.feedback = '';
   }
 
+  cancel (){
+    this.grantService.cancelGrantAttempt()
+  }
 
 }

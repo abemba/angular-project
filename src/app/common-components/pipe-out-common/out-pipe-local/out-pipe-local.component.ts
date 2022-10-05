@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Figure, Fund, FundService } from 'src/app/services/fund.service';
+import { GrantCancelledException } from 'src/app/services/grant.service';
 
 @Component({
   selector: 'app-out-pipe-local',
@@ -14,14 +15,14 @@ export class OutPipeLocalComponent implements OnInit {
 
   state: String = "transfer"
 
-  amount!: number; 
+  amount: number | null = null; 
   target!: number;
   
   isLoading: boolean = false;
 
   constructor(private fund: FundService) {
     fund.getList().subscribe(list => this.accounts=list )
-    fund.getFromPath().subscribe(fund => {this.activeAccount = fund; this.maximum=fund.getBalance() })
+    fund.getFromPath().subscribe(fund => {this.activeAccount = fund; this.maximum=fund.getBalance().inDollars() })
   }
 
   ngOnInit(): void {
@@ -31,14 +32,36 @@ export class OutPipeLocalComponent implements OnInit {
     this.state = state
   }
 
+  getTargetDescriptor () {
+    const target = this.accounts?.find(item => item.getId() == this.target)
+    if(!target){
+      return 'Unknown';
+    }
+    return target.getFundName() + ' - ' + target.getFundNumber(); 
+  }
+
   moveMoney () {
+    if(!this.amount){
+      return 
+    }
+
     this.isLoading = true;
     const amount = Figure.fromDollars(this.amount);
     this.activeAccount?.transferTo(amount, this.target).subscribe(
-      data => {
-        console.log(data)
-        this.isLoading=false;
-        this.onClickUpdateState('transferconfirm')
+      {
+        next: data => {
+          this.isLoading=false;
+          this.onClickUpdateState('transfersuccess')
+          this.amount = null;
+        }, 
+        error: (e) => {
+          if(!(e instanceof GrantCancelledException)){
+            this.onClickUpdateState('transferfailed'); 
+            this.amount=null
+          }
+          this.isLoading=false; 
+        },
+        complete: () => {}
       }
     )
   }

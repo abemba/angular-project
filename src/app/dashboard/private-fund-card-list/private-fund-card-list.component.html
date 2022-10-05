@@ -20,7 +20,7 @@
                             {{ fund.getFundName() }}
                         </a>
                     </td>
-                    <td>{{ fund.getBalance() | currency }}</td>
+                    <td>{{ fund.getBalance().inDollars() | currency }}</td>
                     <td>{{ fund.hasActiveGoal() ? fund.getGoalType() : 'N/A' }}</td>
                 </tr>
             </tbody>

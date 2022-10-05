@@ -1,5 +1,7 @@
+import { Figure } from "../services/fund.service";
+
 export interface Fund {
-    getBalance(): number,
+    getBalance(): Figure,
     getFundName(): string,
     getFundNumber(): string,
     getPendingTransactions(): any[],

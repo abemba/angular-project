@@ -21,7 +21,7 @@ export class BalanceComponent implements OnInit {
 
   constructor(privateFundService:PrivateFundService, private common:CommonService) {
     privateFundService.getFundFromPath().subscribe((fund)=>{
-      this.current_balance = fund.getBalance()
+      this.current_balance = fund.getBalance().inDollars()
       this.fund = fund;
     })
   }

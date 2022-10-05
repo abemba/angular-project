@@ -21,7 +21,7 @@
         </div>
         <div class="col" style="text-align: right">
             <h1>
-                {{fund?.getBalance() | currency}}
+                {{fund?.getBalance()?.inDollars() | currency}}
             </h1>
         </div>
     </div>

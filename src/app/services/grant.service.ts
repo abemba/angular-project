@@ -28,6 +28,13 @@ export class GrantService {
     this.authStore.clear();
   }
 
+  clearTokenForGrant (ability: Abilities) {
+    const tokenName = this.getTokenNameWithAbility(ability)
+    if(tokenName){
+      this.authStore.removeItem(tokenName)
+    }
+  }
+
   /**
    * Attempts to grant a given ability
    * @param request 
@@ -54,7 +61,7 @@ export class GrantService {
               case GrantStatus.CANCELLED:
               case GrantStatus.ERROR:
               default:
-                observer.error('Aunthentication was cancelled.')
+                observer.error(new GrantCancelledException())
                 break;
             }
           } )
@@ -121,6 +128,16 @@ export class GrantService {
       )
     )
   }
+
+  /**
+   *  Cancels the grant process
+   */
+  cancelGrantAttempt () {
+    this.prompt = false;
+    this.status = GrantStatus.CANCELLED;
+    this.promptCallback?.subscribe();
+  }
+
 }
 
 enum GrantStatus {
@@ -128,4 +145,8 @@ enum GrantStatus {
   APPROVED,
   CANCELLED,
   ERROR
+}
+
+export class GrantCancelledException extends Error {
+
 }

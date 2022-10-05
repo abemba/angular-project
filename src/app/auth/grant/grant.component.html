@@ -16,6 +16,9 @@
                         <button type="submit" class="btn btn-warning form-control" (click)="grant()" [disabled]="passwordField.invalid" [appLoadingIcon]="loading">Login</button>
                     </div>
                 </div>
+                <div class="pt-3 d-flex justify-content-center">
+                        <button type="submit" mat-button (click)="cancel()" >Cancel</button>
+                </div>
             </form>
         </div>
     </div>

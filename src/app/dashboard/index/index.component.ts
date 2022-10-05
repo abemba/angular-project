@@ -18,13 +18,13 @@ export class IndexComponent implements OnInit {
     // Private Funds
     privateFundService.getList().subscribe(list=>{
       this.private_fund_count = list.length
-      this.private_fund_total = list.reduce( (sum, fund) => sum + fund.getBalance(), 0)
+      this.private_fund_total = list.reduce( (sum, fund) => sum + fund.getBalance().inDollars(), 0)
     })
 
     // Shared Funds
     sharedFundService.getList().subscribe(list=>{
       this.shared_fund_count = list.length
-      this.shared_fund_total = list.reduce((prev,fund) => prev+fund.getBalance(), 0)
+      this.shared_fund_total = list.reduce((prev,fund) => prev+fund.getBalance().inDollars(), 0)
     })
   }
 

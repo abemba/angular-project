@@ -5,6 +5,7 @@ import { RegisterComponent } from './register/register.component';
 import { FormsModule } from '@angular/forms';
 import { CommonComponentsModule } from '../common-components/common-components.module';
 import { GrantComponent } from './grant/grant.component';
+import { MatButton, MatButtonModule } from '@angular/material/button';
 
 
 
@@ -17,7 +18,8 @@ import { GrantComponent } from './grant/grant.component';
   imports: [
     CommonModule,
     FormsModule,
-    CommonComponentsModule
+    CommonComponentsModule,
+    MatButtonModule
   ],
   exports: [
     LoginComponent,
