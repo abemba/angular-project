@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonService } from 'src/app/services/common.service';
 import { Figure, Fund, FundService } from 'src/app/services/fund.service';
 import { GrantCancelledException } from 'src/app/services/grant.service';
 
@@ -20,7 +21,7 @@ export class OutPipeLocalComponent implements OnInit {
   
   isLoading: boolean = false;
 
-  constructor(private fund: FundService) {
+  constructor(private fund: FundService, private common:CommonService) {
     fund.getList().subscribe(list => this.accounts=list )
     fund.getFromPath().subscribe(fund => {this.activeAccount = fund; this.maximum=fund.getBalance().inDollars() })
   }
@@ -51,6 +52,8 @@ export class OutPipeLocalComponent implements OnInit {
       {
         next: data => {
           this.isLoading=false;
+          this.common.refreshSetupData()
+          setTimeout(() => this.common.refreshSetupData(), 3000)
           this.onClickUpdateState('transfersuccess')
           this.amount = null;
         }, 

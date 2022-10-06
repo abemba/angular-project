@@ -15,6 +15,7 @@ export class CommonService {
   private setupData: any = null;
   private setupDataReady: boolean = false;
   private setupDataInProgress = false;
+  private lastFetchAt : number | null = null;
   
   private setupObserver = new Observable<any>((observer)=>{
     let check = ()=>{
@@ -36,7 +37,7 @@ export class CommonService {
   private fetchSetupData() {
     if(!this.setupDataInProgress){
       // flags
-      this.setupDataReady = false;
+      //this.setupDataReady = false;
       this.setupDataInProgress = true;
       
       this.http.get<any>(Endpoints.INIT.DATA)
@@ -45,6 +46,7 @@ export class CommonService {
           this.setupData = data;
 
           // reset flags
+          this.lastFetchAt = Date.now()
           this.setupDataReady = true;
           this.setupDataInProgress = false;
         })
@@ -61,6 +63,13 @@ export class CommonService {
     }
 
     return this.setupObserver
+  }
+
+  /**
+   * 
+   */
+  refreshSetupData(){
+    this.fetchSetupData()
   }
 
   /**
