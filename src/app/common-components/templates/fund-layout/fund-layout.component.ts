@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Fund } from 'src/app/services/fund.service';
 import { FundMenuItem } from 'src/app/utils/fund-menu-item';
 
 @Component({
@@ -8,7 +9,7 @@ import { FundMenuItem } from 'src/app/utils/fund-menu-item';
 })
 export class FundLayoutComponent implements OnInit {
 
-  @Input() fund: any =null;
+  @Input() fund: Fund | null  =null;
   @Input() menu:FundMenuItem[] = [];
 
   constructor() { }

@@ -22,7 +22,6 @@ export class PrivateFundService extends FundService {
       super.getList().subscribe(fund_list=>{
         const filtered_list = fund_list.filter(fund => fund.isPrivate() )
         observer.next( filtered_list.map(fund => (new PrivateFund(this.http, fund.getData())) ))
-        observer.complete()
       })
     });
   }
@@ -44,7 +43,6 @@ export class PrivateFundService extends FundService {
       .subscribe( 
         fund => {
           observer.next((new PrivateFund(this.http, fund.getData())))
-          //observer.complete();
         }
       )
     })

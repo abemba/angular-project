@@ -20,7 +20,6 @@ export class SharedFundService extends FundService {
       super.getList().subscribe(fund_list=>{
         const filtered_list = fund_list.filter(fund => !fund.isPrivate() )
         observer.next( filtered_list.map(fund => (new SharedFund(this.http, fund.getData())) ))
-        observer.complete()
       })
     });
   }
@@ -43,7 +42,6 @@ export class SharedFundService extends FundService {
       .subscribe( 
         fund => {
           observer.next((new SharedFund(this.http, fund.getData())))
-          observer.complete();
         }
       )
     })

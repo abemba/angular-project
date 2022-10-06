@@ -1,11 +1,12 @@
 import { CurrencyPipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { map, Observable } from 'rxjs';
 import { Abilities } from '../utils/abilities';
+import { AlgofameHttpContext } from '../utils/context';
 import { Endpoints } from '../utils/endpoints';
 import { padZeros, sortTransaction, transactionDescription } from '../utils/functions';
 import { Fund as FundInterface} from '../utils/fund';
@@ -27,7 +28,6 @@ export class FundService {
     return new Observable((observer)=>{
       this.common.loadSetupData().subscribe((data)=>{
         observer.next(data.funds?.map((fundData: any) => (new Fund(this.http, fundData))))
-        //observer.complete()
       })
     });
   }
@@ -50,7 +50,8 @@ export class FundService {
   getFundById(fundID:number): Observable<Fund>{
     return new Observable((observer)=>{
       this.getList().subscribe(list =>{
-        observer.next(list.find( item => item.is(fundID) ))
+        let target = list.find( item => item.is(fundID))
+        observer.next( target )
         //observer.complete() 
       })
     });
@@ -87,7 +88,7 @@ export class FundService {
   }
 
   /**
-   * Uses url matching to find fund id from given path
+   * Uses url matching to find fund from given path
    * @returns 
    */
    getFromPath(): Observable<Fund>{
@@ -105,8 +106,34 @@ export class FundService {
         route.parent?.params.subscribe(params=>{
           this.getFundById(params['id']).subscribe(fund=>{
             observer.next(fund)
-            observer.complete()
+            //observer.complete()
           })
+        })
+      }else{
+        observer.next(undefined)
+        observer.complete()
+      }
+    })
+  }
+
+  /**
+   * Uses url matching to find fund id from given path
+   * @returns 
+   */
+   getFundIdViaPath(): Observable<number>{
+    const isTargetOutlet = (checkOutlet: string) => checkOutlet=='private-fund' || checkOutlet=='shared-fund'; 
+    let route = this.router.routerState.root;
+    while(route.firstChild){
+      route = route.firstChild
+      if(isTargetOutlet(route.outlet))
+        break;
+    }
+    
+    return new Observable<number>((observer)=>
+    {
+      if(isTargetOutlet(route.outlet)){
+        route.parent?.params.subscribe(params=>{
+          observer.next(params['id'])
         })
       }else{
         observer.next(undefined)
@@ -272,6 +299,7 @@ export class Fund implements FundInterface{
    * Transfers to  a local account
    */
   transferTo (amount:Figure, fundID: number, comment: string | null = null) {
+
     return this.http
     .post(
       Endpoints.FUNDS.PIPES.LOCAL
@@ -279,7 +307,9 @@ export class Fund implements FundInterface{
       .replace(':fund',this.getId().toString()), 
       {amount: amount.inCents(), comment:comment },
       {
-        headers: { "grant": Abilities.TRANSFER_OUT.toString() }
+        context: new HttpContext()
+        .set(AlgofameHttpContext.GRANT, AlgofameHttpContext.GRANT.defaultValue())
+        .set(AlgofameHttpContext.REFRESH,AlgofameHttpContext.REFRESH.defaultValue())
       }
     )
   }

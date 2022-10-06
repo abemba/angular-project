@@ -27,7 +27,6 @@ export class CommonService {
       if(!lastCheck || this.lastFetchAt!=lastCheck){
         lastCheck = this.lastFetchAt;
         observer.next(this.setupData)
-        console.log(lastCheck)
       }
     }
     

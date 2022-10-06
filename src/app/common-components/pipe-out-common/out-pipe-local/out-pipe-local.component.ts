@@ -52,8 +52,6 @@ export class OutPipeLocalComponent implements OnInit {
       {
         next: data => {
           this.isLoading=false;
-          this.common.refreshSetupData()
-          setTimeout(() => this.common.refreshSetupData(), 3000)
           this.onClickUpdateState('transfersuccess')
           this.amount = null;
         }, 

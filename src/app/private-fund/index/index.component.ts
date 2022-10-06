@@ -23,7 +23,10 @@ export class IndexComponent implements OnInit {
   ];
 
   constructor(private privateFundService:PrivateFundService, route:ActivatedRoute) {
-    privateFundService.getFundFromPath().subscribe(fundFromPath=>this.fund=fundFromPath)
+    privateFundService.getFundFromPath().subscribe(
+      fundFromPath=>{
+        this.fund=fundFromPath
+      })
   }
 
   ngOnInit(): void {
