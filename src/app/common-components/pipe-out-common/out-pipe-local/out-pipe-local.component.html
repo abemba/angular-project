@@ -21,7 +21,7 @@
 <ng-template #transfer>
     <div class="form-group">
         <label>Amount</label>
-        <input [(ngModel)]="amount" #amountRef="ngModel"  class="form-control" type="number" required [max]="maximum">
+        <input [(ngModel)]="amount" #amountRef="ngModel"  class="form-control" type="number" required [min]="0.01" [max]="maximum">
     </div>
     <div class="form-group mt-3">
         <label>Target Account</label>
