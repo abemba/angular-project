@@ -44,7 +44,7 @@ export class PrivateFundService extends FundService {
       .subscribe( 
         fund => {
           observer.next((new PrivateFund(this.http, fund.getData())))
-          observer.complete();
+          //observer.complete();
         }
       )
     })

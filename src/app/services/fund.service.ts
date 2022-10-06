@@ -27,7 +27,7 @@ export class FundService {
     return new Observable((observer)=>{
       this.common.loadSetupData().subscribe((data)=>{
         observer.next(data.funds?.map((fundData: any) => (new Fund(this.http, fundData))))
-        observer.complete()
+        //observer.complete()
       })
     });
   }
@@ -51,7 +51,7 @@ export class FundService {
     return new Observable((observer)=>{
       this.getList().subscribe(list =>{
         observer.next(list.find( item => item.is(fundID) ))
-        observer.complete() 
+        //observer.complete() 
       })
     });
   }
@@ -76,7 +76,7 @@ export class FundService {
         route.parent?.params.subscribe(params=>{
           this.getFundById(params['id']).subscribe(fund=>{
             observer.next(fund)
-            observer.complete()
+            //observer.complete()
           })
         })
       }else{

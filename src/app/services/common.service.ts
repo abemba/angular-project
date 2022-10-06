@@ -18,15 +18,20 @@ export class CommonService {
   private lastFetchAt : number | null = null;
   
   private setupObserver = new Observable<any>((observer)=>{
+    let lastCheck: number | null = null;
     let check = ()=>{
       if(!this.setupDataReady){
-        setTimeout(check,100)
-      }else{
+        return
+      }
+
+      if(!lastCheck || this.lastFetchAt!=lastCheck){
+        lastCheck = this.lastFetchAt;
         observer.next(this.setupData)
-        observer.complete()
-      }  
+        console.log(lastCheck)
+      }
     }
-    check()
+    
+    setInterval(check,100);
   })
   
   constructor (private http: HttpClient) {}
@@ -37,7 +42,6 @@ export class CommonService {
   private fetchSetupData() {
     if(!this.setupDataInProgress){
       // flags
-      //this.setupDataReady = false;
       this.setupDataInProgress = true;
       
       this.http.get<any>(Endpoints.INIT.DATA)
