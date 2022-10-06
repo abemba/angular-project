@@ -7,107 +7,110 @@ import { Links } from '../utils/links';
 import { AuthService } from './auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CommonService {
-
-  
   private setupData: any = null;
   private setupDataReady: boolean = false;
   private setupDataInProgress = false;
-  private lastFetchAt : number | null = null;
-  
-  private setupObserver = new Observable<any>((observer)=>{
+  private lastFetchAt: number | null = null;
+
+  private setupObserver = new Observable<any>((observer) => {
     let lastCheck: number | null = null;
-    let check = ()=>{
-      if(!this.setupDataReady){
-        return
+    let check = () => {
+      if (!this.setupDataReady) {
+        return;
       }
 
-      if(!lastCheck || this.lastFetchAt!=lastCheck){
+      if (!lastCheck || this.lastFetchAt != lastCheck) {
         lastCheck = this.lastFetchAt;
-        observer.next(this.setupData)
+        if (this.setupData) {
+          observer.next(this.setupData);
+        }
       }
-    }
-    
-    setInterval(check,100);
-  })
-  
-  constructor (private http: HttpClient) {}
+    };
+
+    setInterval(check, 100);
+  });
+
+  constructor(private http: HttpClient) {}
 
   /**
    * Fetches data for initialization
    */
   private fetchSetupData() {
-    if(!this.setupDataInProgress){
+    if (!this.setupDataInProgress) {
       // flags
       this.setupDataInProgress = true;
-      
-      this.http.get<any>(Endpoints.INIT.DATA)
-      .subscribe(
-        data => {
+
+      this.http.get<any>(Endpoints.INIT.DATA).subscribe({
+        next: (data) => {
           this.setupData = data;
 
           // reset flags
-          this.lastFetchAt = Date.now()
+          this.lastFetchAt = Date.now();
           this.setupDataReady = true;
           this.setupDataInProgress = false;
-        })
+        },
+        error: () => this.setupDataInProgress = false
+      });
     }
+  }
+
+  /**
+   * Logs out
+   */
+  public clearDataOnLogout() {
+    this.setupData = null;
   }
 
   /**
    * Provides setup data
-   * @returns 
+   * @returns
    */
-  public loadSetupData () {
-    if(!this.setupData){
+  public loadSetupData() {
+    if (!this.setupData) {
       this.fetchSetupData();
     }
 
-    return this.setupObserver
+    return this.setupObserver;
   }
 
   /**
-   * 
+   *
    */
-  refreshSetupData(){
-    this.fetchSetupData()
+  refreshSetupData() {
+    this.fetchSetupData();
   }
 
   /**
    * Profile Data
-   * @returns 
+   * @returns
    */
-  public getProfile () {
-    return new Observable((observer)=>{
-      this.setupObserver.subscribe(data=>{
-        observer.next(data.profile)
-        observer.complete()
-      })
+  public getProfile() {
+    return new Observable((observer) => {
+      this.setupObserver.subscribe((data) => {
+        observer.next(data.profile);
+        observer.complete();
+      });
     });
   }
-  
 
   /**
    * Updates profile
-   * @param body 
-   * @returns 
+   * @param body
+   * @returns
    */
-  public updateProfile (body: any) {
-    return this.http.post(Endpoints.PROFILE.UPDATE,body)
+  public updateProfile(body: any) {
+    return this.http.post(Endpoints.PROFILE.UPDATE, body);
   }
 
-  public reloadPage () {
-
-  }
-
-  public getCards () {
-    return new Observable((observer)=>{
-      this.setupObserver.subscribe(data=>{
-        observer.next(data?.cards)
-        observer.complete()
-      })
+  public getCards() {
+    return new Observable((observer) => {
+      this.setupObserver.subscribe((data) => {
+        observer.next(data?.cards);
+        observer.complete();
+      });
     });
   }
 }

@@ -28,9 +28,6 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.auth.login(this.email,this.password).subscribe(
       {
-        complete: ()=> {
-          this.common.loadSetupData()
-        },
         error: (error) => {
           this.showAuthErrorMsg = true;
           if(error.status==0){

@@ -22,9 +22,7 @@ export class SettingsComponent implements OnInit {
 
 
   updateName(){
-    this.fund?.updateFundName(this.fundName).subscribe(d=>{
-      this.common.reloadPage()
-    })
+    this.fund?.updateFundName(this.fundName).subscribe()
   }
 
 }

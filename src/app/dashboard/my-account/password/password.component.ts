@@ -39,7 +39,6 @@ export class PasswordComponent implements OnInit {
     this.form.new_password = this.form.new;
     this.auth.updatePassword(this.form).subscribe(data => {
       this.updating = false;
-      console.log(data)
     })
   }
 

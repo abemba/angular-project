@@ -39,9 +39,7 @@ export class TimeComponent implements OnInit {
   }
 
   confirm(){
-    this.fund.setGoal({type:GoalType.TIME, target:this.selected_date.format("MMM D, YYYY")}).subscribe(()=>{
-      this.common.reloadPage()
-    })
+    this.fund.setGoal({type:GoalType.TIME, target:this.selected_date.format("MMM D, YYYY")}).subscribe()
   }
 
 }

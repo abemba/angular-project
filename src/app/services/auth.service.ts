@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, from, map, Observable } from 'rxjs';
 import { Endpoints } from '../utils/endpoints';
@@ -7,6 +7,8 @@ import * as moment from 'moment';
 // @ts-ignore
 import webStorage from 'webstoragejs';
 import { GrantService } from './grant.service';
+import { AlgofameHttpContext } from '../utils/context';
+import { CommonService } from './common.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,7 @@ export class AuthService {
   private auth_token: string = '';
   protected authStore: any = webStorage({ namespace: 'algofame::auth' });
 
-  constructor(private http: HttpClient, private grant: GrantService) {
+  constructor(private http: HttpClient, private grant: GrantService, private common: CommonService) {
     this.restoreAuthToken()
   }
 
@@ -25,7 +27,7 @@ export class AuthService {
   }
 
   public login(email: string, password: string) {
-    return this.http.post<any>(Endpoints.AUTH.LOGIN, { email, password })
+    return this.http.post<any>(Endpoints.AUTH.LOGIN, { email, password }, {context: new HttpContext().set(AlgofameHttpContext.REFRESH,AlgofameHttpContext.REFRESH.defaultValue())})
       .pipe(
         map(data => {
           this.setAuthToken(data?.access_token)
@@ -38,6 +40,7 @@ export class AuthService {
     this.grant.logout();
     this.authStore.clear()
     this.auth_token = '';
+    this.common.clearDataOnLogout();
   }
 
   private setAuthToken(token: string) {

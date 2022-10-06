@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { map, Observable, tap } from 'rxjs';
+import { AlgofameHttpContext } from '../utils/context';
 import { FundGoal } from '../utils/fund-goal';
 import { Links } from '../utils/links';
 import { CommonService } from './common.service';
@@ -76,12 +77,17 @@ export class PrivateFund extends Fund {
 
   public setGoal(goal:FundGoal): Observable<any>{
     return this.http
-    .post<any>(Links.SET_GOAL.replace(":id",this.fundID.toString()),goal);
+    .post<any>(Links.SET_GOAL.replace(":id",this.fundID.toString()),goal,
+    {
+      context: new HttpContext().set(AlgofameHttpContext.REFRESH, AlgofameHttpContext.REFRESH.defaultValue())
+    });
   }
 
   public updateFundName(newName:string){
-    return this.http.patch(Links.PRIVATE_FUND_URL.replace(":id",this.fundID.toString()),{"nickname":newName})
-    .pipe(map((data)=>{ 
+    return this.http.patch(Links.PRIVATE_FUND_URL.replace(":id",this.fundID.toString()),{"nickname":newName},
+    {
+      context: new HttpContext().set(AlgofameHttpContext.REFRESH, AlgofameHttpContext.REFRESH.defaultValue() )
+    }).pipe(map((data)=>{ 
       this.fundData.nickname=newName; return data;
     }))
   }

@@ -43,7 +43,6 @@ export class BankComponent implements OnInit {
 
   updateState(state:String){
       this.state = state
-      console.log(state)
   }
 
 }

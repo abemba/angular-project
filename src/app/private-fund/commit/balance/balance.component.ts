@@ -40,8 +40,6 @@ export class BalanceComponent implements OnInit {
   }
 
   public showConfirm(){
-    console.log(this.current_balance)
-    console.log(this.goal.target)
     if(this.current_balance>this.goal.target){
       this.show_feedback=true;
     }else{
@@ -51,7 +49,6 @@ export class BalanceComponent implements OnInit {
 
   public confirm(){
       this.fund.setGoal(this.goal).subscribe((data)=>{
-        this.common.reloadPage()
       })
   }
 

@@ -43,20 +43,19 @@ export class AuthInterceptorInterceptor implements HttpInterceptor {
         const authReq = request.clone({ setHeaders: { Authorization: 'Bearer '+this.auth.getAuthToken() } });
         modifiedRequest = next.handle(authReq)
       }
-      
-      /**
-       * Refresh the data after an operation is completed
-       */
-      if(request.context.has(AlgofameHttpContext.REFRESH)){
-        modifiedRequest = modifiedRequest.pipe(
-          tap((data) => {
-            if(data instanceof HttpResponse){
-              setInterval(() => this.common.refreshSetupData(),2000)
-            }
-          }))
-      }
     }
     
+    /**
+     * Refresh the data after an operation is completed
+     */
+    if(request.context.has(AlgofameHttpContext.REFRESH)){
+      modifiedRequest = modifiedRequest.pipe(
+        tap((data) => {
+          if(data instanceof HttpResponse){
+            setTimeout(() => this.common.refreshSetupData(),2000)
+          }
+        }))
+    }
     return modifiedRequest;
   }
 
