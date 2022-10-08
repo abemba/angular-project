@@ -1,31 +1,31 @@
 <div class="d-flex justify-content-center">
     <div style="max-width: 600px; width:100%">
         <ng-container [ngSwitch]="state">
-                <ng-container *ngSwitchCase="'nobank'" >
-                    <ng-container *ngTemplateOutlet="nobank"></ng-container>
-                </ng-container>
-                
-                <ng-container *ngSwitchCase="'addbank'" >
-                    <ng-container *ngTemplateOutlet="addbank"></ng-container>
+            <ng-container *ngSwitchCase="'nobank'">
+                <ng-container *ngTemplateOutlet="nobank"></ng-container>
             </ng-container>
-            
-            <ng-container *ngSwitchCase="'addbankconfirm'" >
+
+            <ng-container *ngSwitchCase="'addbank'">
+                <ng-container *ngTemplateOutlet="addbank"></ng-container>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'addbankconfirm'">
                 <ng-container *ngTemplateOutlet="addbankconfirm"></ng-container>
             </ng-container>
-            
-            <ng-container *ngSwitchCase="'addbanksuccess'" >
+
+            <ng-container *ngSwitchCase="'addbanksuccess'">
                 <ng-container *ngTemplateOutlet="addbanksuccess"></ng-container>
             </ng-container>
-            
-            <ng-container *ngSwitchCase="'chargebank'" >
+
+            <ng-container *ngSwitchCase="'chargebank'">
                 <ng-container *ngTemplateOutlet="chargebank"></ng-container>
             </ng-container>
-            
-            <ng-container *ngSwitchCase="'chargebanksuccess'" >
+
+            <ng-container *ngSwitchCase="'chargebanksuccess'">
                 <ng-container *ngTemplateOutlet="chargebanksuccess"></ng-container>
             </ng-container>
-            
-            <ng-container *ngSwitchCase="'chargebankconfirm'" >
+
+            <ng-container *ngSwitchCase="'chargebankconfirm'">
                 <ng-container *ngTemplateOutlet="chargebankconfirm"></ng-container>
             </ng-container>
         </ng-container>
@@ -35,7 +35,7 @@
 <ng-template #nobank>
     <div class="text-center">
         <p>You have 0 bank accounts linked.</p>
-        <button class="btn btn-warning" (click)="updateState('addbank')" >+ Add Account </button>
+        <button class="btn btn-warning" (click)="updateState('addbank')">+ Add Account </button>
     </div>
 </ng-template>
 
@@ -45,31 +45,32 @@
         <div>
             <div class="form-group mt-3">
                 <label>First Name</label>
-                <input class="form-control"  type="text" name="first_name">
+                <input class="form-control" type="text" name="first_name">
             </div>
             <div class="form-group mt-3">
                 <label>Last Name</label>
-                <input class="form-control"  type="text" name="last_name">
+                <input class="form-control" type="text" name="last_name">
             </div>
             <div class="form-group mt-5">
                 <label>Bank Number</label>
-                <input class="form-control"  type="number" name="bank_number">
+                <input class="form-control" type="number" name="bank_number">
             </div>
             <div class="form-group mt-2">
                 <label>Branch Number</label>
-                <input class="form-control"  type="number" name="branch_number">
+                <input class="form-control" type="number" name="branch_number">
             </div>
             <div class="form-group mt-2">
                 <label>Account Number</label>
                 <input class="form-control" type="number" name="account_number">
             </div>
-            <button class="form-control btn btn-warning mb-5 mt-5" (click)="updateState('addbankconfirm')">+ Add</button>
+            <button class="form-control btn btn-warning mb-5 mt-5" (click)="updateState('addbankconfirm')">+
+                Add</button>
         </div>
     </form>
 </ng-template>
 
 <ng-template #addbankconfirm>
-    <h4 class="mt-4 mb-4" >Confirm Bank Account</h4>
+    <h4 class="mt-4 mb-4">Confirm Bank Account</h4>
     <div class="list-group">
         <div class="list-group-item d-flex justify-content-between">
             <span>First Name</span>
@@ -111,7 +112,8 @@
         <h6>Success</h6>
         <p>The transfer was successfully schedulled.</p>
         <div style="text-align: right" class="mt-3">
-            <button class="btn btn-warning form-control mt-5 mb-5" type="submit" form="form1" (click)="updateState('chargebank')">continue</button>
+            <button class="btn btn-warning form-control mt-5 mb-5" type="submit" form="form1"
+                (click)="updateState('chargebank')">continue</button>
         </div>
     </div>
 </ng-template>
@@ -121,16 +123,20 @@
     <div class="list-group mt-3">
         <div class="list-group-item d-flex justify-content-between">From <strong>{{transfer_source}}</strong></div>
         <div class="list-group-item d-flex justify-content-between">To <strong>{{transfer_destination}}</strong></div>
-        <div class="list-group-item d-flex justify-content-between">Amount <strong>{{transfer_amount | currency}}</strong></div>
-        <div class="list-group-item d-flex justify-content-between">Processing fee <strong>${{transfer_fee | currency}}</strong></div>
+        <div class="list-group-item d-flex justify-content-between">Amount <strong>{{transfer_amount |
+                currency}}</strong></div>
+        <div class="list-group-item d-flex justify-content-between">Processing fee <strong>${{transfer_fee |
+                currency}}</strong></div>
         <div class="list-group-item d-flex justify-content-between">Total <strong>${{total_charge}}</strong></div>
         <div *ngIf="recurring" class="list-group-item d-flex justify-content-between">Frequency
             <strong>{{recurring_frequency}}</strong>
         </div>
-        <div *ngIf="recurring"  class="list-group-item d-flex justify-content-between">Start date <strong>{{ recurring_start |date:'mediumDate'}}</strong></div>
+        <div *ngIf="recurring" class="list-group-item d-flex justify-content-between">Start date <strong>{{
+                recurring_start |date:'mediumDate'}}</strong></div>
     </div>
     <div style="text-align: right" class="mt-3">
-        <button class="btn btn-success form-control mb-5 mt-5" type="submit" form="form1" (click)="updateState('chargebanksuccess')">confirm</button>
+        <button class="btn btn-success form-control mb-5 mt-5" type="submit" form="form1"
+            (click)="updateState('chargebanksuccess')">confirm</button>
     </div>
 </ng-template>
 
@@ -154,12 +160,13 @@
     </div>
     <div class="mt-4">
         <div class="form-check">
-            <input id="recurringToggle" class="form-check-input" type="checkbox" value="1" [(ngModel)]="recurring" name="recurring">
+            <input id="recurringToggle" class="form-check-input" type="checkbox" value="1" [(ngModel)]="recurring"
+                name="recurring">
             <label class="form-check-label" for="recurringToggle">
                 Recurring
             </label>
         </div>
-        <ng-container *ngIf="recurring" >
+        <ng-container *ngIf="recurring">
             <label>Start Date</label>
             <div class="input-group">
                 <input class="form-control" type="text" name="start_date" id="datepicker" autocomplete="off">
@@ -178,6 +185,7 @@
         </ng-container>
     </div>
     <div style="text-align: right">
-        <button id="addFromCard" class="btn btn-warning mt-5 mb-5 form-control" type="submit" (click)="updateState('chargebankconfirm')">continue</button>
+        <button id="addFromCard" class="btn btn-warning mt-5 mb-5 form-control" type="submit"
+            (click)="updateState('chargebankconfirm')">continue</button>
     </div>
 </ng-template>

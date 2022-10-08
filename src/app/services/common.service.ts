@@ -1,10 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Endpoints } from '../utils/endpoints';
-import { Links } from '../utils/links';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -92,6 +89,18 @@ export class CommonService {
       this.setupObserver.subscribe((data) => {
         observer.next(data.profile);
         observer.complete();
+      });
+    });
+  }
+
+  /**
+   * Pipes
+   * @returns
+   */
+   public getFundPipes() {
+    return new Observable((observer) => {
+      this.setupObserver.subscribe((data) => {
+        observer.next(data.pipes);
       });
     });
   }

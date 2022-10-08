@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-bank',
@@ -7,25 +7,8 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class BankComponent implements OnInit {
 
-  @Input()
-  public accountID!: String;
-
-  public bank_list: any[] = 
-  [
-    {
-      id: 1,
-      label:"Rbc",
-      account_number: "****111",
-      branch_number:"12345"
-    },
-    {
-      id: 1,
-      label:"Rbc",
-      account_number: "****111",
-      branch_number:"12345"
-    },
-  ]
-  public state:String = "chargebank"
+  public bank_list: any[] = []
+  public state:String = "nobank"
   public fund: any = {}
   public selected_bank: any = {}
   public transfer_source = "bank"
@@ -36,7 +19,9 @@ export class BankComponent implements OnInit {
   public recurring = true;
   public recurring_frequency = "daily";
   public recurring_start = new Date();
-  constructor() { }
+
+  constructor () { 
+  }
 
   ngOnInit(): void {
   }

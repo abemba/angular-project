@@ -16,7 +16,8 @@ export class AppComponent {
     //{label:"Shared Funds", link:"/shared-funds",  option:{exact:false}, icon:"mdi-sofa-outline"},
     {label:"Private Funds", link:"/private-funds",  option:{exact:false}, icon:"mdi-account-outline"},
     {label:"Shared Funds", link:"/shared-funds",  option:{exact:false}, icon:"mdi-account-group-outline"},
-    {label:"Labels", link:"/fund-categories",  option:{exact:false}, icon:"mdi-dots-triangle"},
+    //{label:"Labels", link:"/fund-categories",  option:{exact:false}, icon:"mdi-dots-triangle"},
+    {label:"Labels", link:"/fund-categories",  option:{exact:false}, icon:"mdi-label-multiple-outline"},
     {label:"My Account", link:"/my-account",  option:{exact:false}, icon:"mdi-account-cog-outline"},
   ]
 
