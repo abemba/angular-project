@@ -20,23 +20,8 @@ import { FundCategoryComponent } from './fund-category/fund-category.component';
 import { FundArchiveComponent } from './my-account/fund-archive/fund-archive.component';
 import { CommonComponentsModule } from '../common-components/common-components.module';
 import { FormsModule } from '@angular/forms';
-
-const routes: Routes = 
-[
-  { path:"dashboard", component: IndexComponent, },
-  { path:"shared-funds", component:SharedFundCardListComponent},
-  { path:"private-funds", component:PrivateFundCardListComponent},
-  { path:"fund-categories", component:FundCategoryComponent},
-  { path:"my-account", component:MyAccountComponent, 
-  children:
-  [
-    {outlet:"myaccount", path:"", component:ProfileComponent},
-    {outlet:"myaccount", path:"verify", component:VerifyComponent},
-    {outlet:"myaccount", path:"email", component:AuthComponent},
-    {outlet:"myaccount", path:"password", component:PasswordComponent},
-    {outlet:"myaccount", path:"archives", component:FundArchiveComponent},
-  ]},
-];
+import { CreateFundComponent } from './create-fund/create-fund.component';
+import { MyContactsComponent } from './my-contacts/my-contacts.component';
 
 @NgModule({
   declarations: [
@@ -55,11 +40,13 @@ const routes: Routes =
     ProfileComponent,
     PasswordComponent,
     FundCategoryComponent,
-    FundArchiveComponent
+    FundArchiveComponent,
+    CreateFundComponent,
+    MyContactsComponent
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes),
+    RouterModule,
     MatButtonModule,
     CommonComponentsModule,
     FormsModule

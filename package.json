@@ -23,6 +23,8 @@
     "@angular/router": "^14.0.0",
     "@stripe/stripe-js": "^1.32.0",
     "lodash": "^4.17.21",
+    "mobx": "^6.6.2",
+    "mobx-angular": "^4.6.0",
     "ngx-stripe": "^14.1.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

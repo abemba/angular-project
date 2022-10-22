@@ -1,1 +1,21 @@
-<p>fund-archive works!</p>
+<table class="table" *ngIf="archivedList.length>0; else empty">
+    <thead>
+    <tr>
+        <td>Name</td>
+        <td>Number</td>
+        <td>Balance</td>
+        <td>Restore</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let fund of archivedList">
+        <td>{{fund.getFundName() | titlecase}}</td>
+        <td>{{fund.getFundNumber()}}</td>
+        <td>{{fund.getBalance().inDollars() | currency}}</td>
+        <td class="cursor-pointer" (click)="restore(fund)" [appLoadingIcon]="isLoading"><span class="mdi mdi-restore"></span></td>
+    </tr>
+    </tbody>
+</table>
+<ng-template #empty>
+    <app-response-message message="You currently have no funds archived."></app-response-message>
+</ng-template>

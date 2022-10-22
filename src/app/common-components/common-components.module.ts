@@ -20,6 +20,12 @@ import { MasterLayoutComponent } from './templates/master-layout/master-layout.c
 import { FundLayoutComponent } from './templates/fund-layout/fund-layout.component';
 import { BasicLayoutComponent } from './templates/basic-layout/basic-layout.component';
 import { LoadingIconDirective } from './loading-icon.directive';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {STRIPE_PUBLIC_KEY} from "../utils/constants/stripe-config";
+import { MethodNotAvailableComponent } from './method-not-available/method-not-available.component';
+import { ErrorComponent } from './error/error.component';
+import { ResponseMessageComponent } from './response-message/response-message.component';
+import { CreateContactComponent } from './create-contact/create-contact.component';
 
 
 
@@ -40,25 +46,34 @@ import { LoadingIconDirective } from './loading-icon.directive';
     MasterLayoutComponent,
     FundLayoutComponent,
     BasicLayoutComponent,
-    LoadingIconDirective
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    NgxStripeModule.forRoot("pk_test_O2qZBlZwaSiQe6CTRBvxKhQt"),
-    MatButtonModule,
-    RouterModule
-
-  ],
-  exports:[
-    PipeInCommonComponent,
-    PipeOutCommonComponent,
-    FundMenuComponent,
-    SubViewDirective,
-    LoadingOverlayComponent,
-    BasicLayoutComponent,
-    FundLayoutComponent,
     LoadingIconDirective,
-  ]
+    MethodNotAvailableComponent,
+    ErrorComponent,
+    ResponseMessageComponent,
+    CreateContactComponent
+  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        NgxStripeModule.forRoot(STRIPE_PUBLIC_KEY),
+        MatButtonModule,
+        RouterModule,
+        MatDatepickerModule
+
+    ],
+    exports: [
+        PipeInCommonComponent,
+        PipeOutCommonComponent,
+        FundMenuComponent,
+        SubViewDirective,
+        LoadingOverlayComponent,
+        BasicLayoutComponent,
+        FundLayoutComponent,
+        LoadingIconDirective,
+        MethodNotAvailableComponent,
+        ErrorComponent,
+        ResponseMessageComponent,
+        CreateContactComponent
+    ]
 })
 export class CommonComponentsModule { }

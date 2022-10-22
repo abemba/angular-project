@@ -14,6 +14,9 @@
     <ng-container *ngSwitchCase="'transferfailed'">
         <ng-container *ngTemplateOutlet="transferfailed"></ng-container>
     </ng-container>
+    <ng-container *ngSwitchCase="'methodnotavailable'">
+        <ng-container *ngTemplateOutlet="methodnotavailable"></ng-container>
+    </ng-container>
 </ng-container>
 
 
@@ -26,8 +29,8 @@
     <div class="form-group mt-3">
         <label>Target Account</label>
         <select required [(ngModel)]="target" #targetRef="ngModel" class="form-control">
-            <ng-container *ngFor="let account of accounts">
-                <option [value]="account.getId()" *ngIf="!account.is(activeAccount?.getId() ?? 0)">
+            <ng-container *ngFor="let account of accounts; let i=index">
+                <option [ngValue]="account" *ngIf="!account.is(activeAccount?.getId() ?? 0)">
                     {{account.getFundName()}} - {{account.getFundNumber()}}
                 </option>
             </ng-container>
@@ -67,6 +70,10 @@
         <p class="mt-3">The system has experience a critical error. Please try again later.</p>
         <button class="mt-3" mat-flat-button color="accent" (click)="onClickUpdateState('transfer')">try again</button>
     </div>
+</ng-template>
+
+<ng-template #methodnotavailable>
+    <app-method-not-available></app-method-not-available>
 </ng-template>
 
 <ng-template #transferpendingapproval>

@@ -12,15 +12,15 @@ export class PrivateFundCardListComponent implements OnInit {
   constructor(private privateFundService: PrivateFundService) {
     this.setFunds()
   }
-  
+
   ngOnInit(): void {
   }
-  
+
   setFunds(){
     this.privateFundService
     .getList()
     .subscribe((list) => {
-      this.funds = list
+      this.funds = list.filter( item => !item.isArchived())
     })
   }
 

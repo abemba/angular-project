@@ -16,7 +16,7 @@
                     <td>{{ fund.getFundNumber() }}</td>
                     <td>
                         <a routerLink="/shared-funds/{{fund.getId()}}" >
-                            {{ fund.getFundName() }}
+                            {{ fund.getFundName() | titlecase}}
                         </a>
                     </td>
                     <td>{{ fund.getMemberCount() }}</td>

@@ -14,11 +14,11 @@
             </div>
         </div>
     </div>
-    
+
     <div class="col-8">
         <ng-container [ngSwitch]="active">
             <ng-container *ngSwitchCase="'e-Transfer'">
-                <app-in-pipe-emt [email]="fund?.getEmtDomain()" [challenge]="fund?.getEmtPipeInChallenge()" [response]="fund?.getEmtPipeInResponse()"></app-in-pipe-emt>
+                <app-in-pipe-emt [member]="fund?.getCurrentMember()" ></app-in-pipe-emt>
             </ng-container>
             <ng-container *ngSwitchCase="'Bank'">
                 <app-in-pipe-bank></app-in-pipe-bank>

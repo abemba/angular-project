@@ -1,17 +1,27 @@
 <h3 class="fs-5 mb-0">Balance</h3>
-<p class="mb-3">Set a desired amount that you would like to reach.</p>
+<p class="mb-5">Set a desired amount that you would like to reach.</p>
 
 <ng-container [ngSwitch]="state">
     <ng-container *ngSwitchCase="'confirm'">
         <div class="list-group">
-            <div class="list-group-item">
-                <div class="list-group-item d-flex justify-content-between">
-                    <span>Target balance</span>
-                    <span>{{goal.target}}</span>
-                </div>
+            <div class="list-group-item d-flex justify-content-between">
+                <span>Target balance</span>
+                <span>{{ amount | currency}}</span>
+            </div>
+            <div class="list-group-item d-flex justify-content-between">
+                <span>Current balance</span>
+                <span>{{ currentBalance.inDollars() | currency}}</span>
+            </div>
+            <div class="list-group-item d-flex justify-content-between">
+                <span>Difference</span>
+                <span>{{ (amount ? amount: 0) - currentBalance.inDollars() | currency}}</span>
             </div>
         </div>
+        <div class="mt-5">
+            <button [appLoadingIcon]="isLoading" class="mt-3 form-control"  type="number" mat-flat-button color="accent"  (click)="confirm()">confirm</button>
+        </div>
     </ng-container>
+
     <ng-container *ngSwitchDefault>
         <div class="input-group">
             <div class="input-group-prepend">
@@ -19,11 +29,27 @@
                     <span class="mdi mdi-currency-usd"></span>
                 </button>
             </div>
-            <input (change)="hideFeedback()" [(ngModel)]="goal.target" class="form-control" type="number" name="amount" id="amount" step=".01">
+            <input #amountField="ngModel" required [min]="currentBalance.inDollars()" [(ngModel)]="amount" class="form-control" type="number" name="amount" id="amount" step=".01">
         </div>
-        <div>
-            <p [class.d-none]="!show_feedback" class="text-center text-danger mt-3">The target balance must exceed the current balance</p>
-            <button class="mt-3 form-control" mat-flat-button color="accent" [disabled]="isNotNumber()" (click)="confirm()">confirm</button>
+        <div class="mt-5">
+            <p [class.d-none]="amountField.pristine || amountField.valid" class="text-center text-danger mt-3">The target balance must exceed the current balance</p>
+            <button class="mt-3 form-control"  type="number" mat-flat-button color="accent" [disabled]="amountField.invalid" (click)="update('confirm')">continue</button>
+        </div>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'success'">
+        <div class="text-center">
+            <span class="mdi mdi-emoticon-happy-outline mdi-48px text-success"></span>
+            <p>Bank account was linked successfully.</p>
+            <button class="btn btn-warning mt-5" (click)="update('init')">continue</button>
+        </div>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'error'">
+        <div class="text-center mt-3">
+            <span class="mdi mdi-48px mdi-emoticon-confused-outline text-danger"></span>
+            <p class="mt-3">The system has experience a critical error. Please try again later.</p>
+            <button class="mt-5" mat-flat-button color="accent" (click)="update('init')">try again</button>
         </div>
     </ng-container>
 </ng-container>

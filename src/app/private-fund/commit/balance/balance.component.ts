@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from 'src/app/services/common.service';
 import { PrivateFund, PrivateFundService } from 'src/app/services/private-fund.service';
-import { FundGoal } from 'src/app/utils/fund-goal';
-import { GoalType } from 'src/app/utils/goal-type';
+import {Figure} from "../../../utils/classes/figure";
+import {BalanceComponentState} from "../../../utils/types/balance-component-state";
 
 @Component({
   selector: 'app-balance',
@@ -11,49 +11,41 @@ import { GoalType } from 'src/app/utils/goal-type';
 })
 export class BalanceComponent implements OnInit {
 
-  public current_balance = 0;
-
-  public show_feedback = false;
-
+  public currentBalance: Figure  = Figure.fromDollars(0);
   public fund!:PrivateFund
+  public amount: number | null  = null;
+  public state: BalanceComponentState = 'init';
+  public isLoading: boolean = false;
 
-  public state:string = ''
 
   constructor(privateFundService:PrivateFundService, private common:CommonService) {
     privateFundService.getFundFromPath().subscribe((fund)=>{
-      this.current_balance = fund.getBalance().inDollars()
+      this.currentBalance = fund.getBalance()
       this.fund = fund;
     })
   }
 
-  public goal: FundGoal = {type:GoalType.BALANCE,target:''}
-
   ngOnInit(): void {
   }
 
-  public isNotNumber(){
-    if(!this.goal.target){
-      return true;
-    }
-    let amount = Number(this.goal.target);
-    return isNaN(amount);
-  }
-
-  public showConfirm(){
-    if(this.current_balance>this.goal.target){
-      this.show_feedback=true;
-    }else{
-      this.state="confirm"
-    }
+  public update(state: BalanceComponentState){
+      this.state = state;
   }
 
   public confirm(){
-      this.fund.setGoal(this.goal).subscribe((data)=>{
-      })
+      this.isLoading = true;
+      if(this.amount){
+        this.fund.setBalanceGoal(Figure.fromDollars(this.amount)).subscribe(
+            {
+                next: () => {
+                    this.state = 'success';
+                    this.isLoading = false;
+                },
+                error: () => {
+                    this.isLoading = false;
+                    this.state = 'error'
+                }
+            })
+      }
   }
-
-  public hideFeedback(){
-    this.show_feedback=false
-  }
-
 }

@@ -14,7 +14,7 @@ export class IndexComponent implements OnInit {
   public shared_fund_total=0;
   public shared_fund_count=0;
 
-  constructor(private privateFundService:PrivateFundService, private sharedFundService:SharedFundService) {
+  constructor(privateFundService:PrivateFundService,  sharedFundService:SharedFundService) {
     // Private Funds
     privateFundService.getList().subscribe(list=>{
       this.private_fund_count = list.length

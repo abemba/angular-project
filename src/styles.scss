@@ -24,3 +24,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .ng-invalid:not(.ng-pristine, .exclude) {
     @apply is-invalid
 }
+
+.simple-link:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}

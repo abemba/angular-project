@@ -1,12 +1,12 @@
 <div class="row">
-    <div class="col-4">
+    <div class="col-2">
         <div class="nav flex-column nav-pills">
             <div class="nav-item" *ngFor="let option of menu">
                 <span class="nav-link cursor-pointer" routerLinkActive="active" [routerLink]="option.link">{{option.label}}</span>
             </div>
         </div>
     </div>
-    <div class="col-8">
+    <div class="col-10">
         <router-outlet name="requests"></router-outlet>
     </div>
 </div>

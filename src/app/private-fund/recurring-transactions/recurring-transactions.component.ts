@@ -5,6 +5,9 @@ import { PrivateFundService } from 'src/app/services/private-fund.service';
 import { BankTransferState } from 'src/app/utils/bank-transfer-state';
 import { BankTransferType } from 'src/app/utils/bank-transfer-type';
 import { bankTransferSource, bankTransferState, bankTransferTarget, padZeros, daysToString } from 'src/app/utils/functions';
+import {RecurringBankTransfer} from "../../utils/classes/recurring-bank-transfer";
+import {RecurringEmtTransfer} from "../../utils/classes/recurring-emt-transfer";
+import {RecurringCardTransfer} from "../../utils/classes/recurring-card-transfer";
 
 @Component({
   selector: 'app-recurring-transactions',
@@ -13,54 +16,25 @@ import { bankTransferSource, bankTransferState, bankTransferTarget, padZeros, da
 })
 export class RecurringTransactionsComponent implements OnInit {
 
-  public transactions_card: any[] = []
   cards:any={}
 
-  public transactions_emt: any[] = []
+  public transactions_emt: RecurringEmtTransfer[] = []
 
-  public transactions_bank: any[] = []
+  public cardTransfers: RecurringCardTransfer[] = []
+  public bankTransfers: RecurringBankTransfer[] = []
   public recurring_items: any = {}
 
-  constructor( privateFundService:PrivateFundService, common:CommonService) {
-    privateFundService.getFundFromPath().subscribe(fund=>{
-      this.recurring_items = fund.getRecurringTransactions();
-    })
-    common.getCards().subscribe((cards)=>{this.cards=cards;})
+  constructor( privateFundService:PrivateFundService) {
+      privateFundService.getFundFromPath().subscribe(
+          fund => {
+              this.bankTransfers = fund.getRecurringBankTransfers();
+              this.cardTransfers = fund.getRecurringCardTransfers();
+          }
+      )
   }
 
   ngOnInit(): void {
   }
 
-  bankTransferTargetName(type:BankTransferType,is_source:boolean): string{
-    if(is_source){
-      return bankTransferSource(type)
-    }else{
-      return bankTransferTarget(type)
-    }
-  }
-
-  bTransferState(state:BankTransferState){
-    return bankTransferState(state);
-  }
-
-  pad(id:string){
-    return padZeros(id);
-  }
-
-  date(unix_timestamp:number){
-    return unix_timestamp ? new Date(unix_timestamp*1000): new Date();
-  }
-
-  intToDays(int:number){
-    return daysToString(int)
-  }
-
-  getBrand(token:string){
-    return this.cards[token]?.brand;
-  }
-
-  getLast4(token:string){
-    return this.cards[token]?.last_4;
-  }
 
 }

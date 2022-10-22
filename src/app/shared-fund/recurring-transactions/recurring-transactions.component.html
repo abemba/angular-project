@@ -1,64 +1,65 @@
-<h3>Bank (transfer-out)</h3>
-<table class="table">
+<h3>Bank</h3>
+<table class="table" *ngIf="recurringBank.length>0; else empty">
     <thead>
         <tr>
             <td>ID</td>
             <td>Member</td>
-            <td>From</td>
-            <td>To</td>
-            <td>Frequency</td>
             <td>Started</td>
-            <td>Interval</td>
+            <td>Next</td>
+            <td>Frequency</td>
+            <td>Type</td>
             <td>Amount</td>
         </tr>
     </thead>
-    <tbody></tbody>
-</table>
-<h3>Bank (transfer-in)</h3>
-<table class="table">
-    <thead>
-        <tr>
-            <td>ID</td>
-            <td>Member</td>
-            <td>From</td>
-            <td>To</td>
-            <td>Frequency</td>
-            <td>Started</td>
-            <td>Interval</td>
-            <td>Amount</td>
+    <tbody>
+        <tr *ngFor="let transfer of recurringBank">
+            <td class="text-primary simple-link">{{ transfer.getTransactionID() }}</td>
+            <td>{{ transfer.getMember()?.getFullname() }}</td>
+            <td>{{ transfer.getStartDateFormatted() }}</td>
+            <td>{{ transfer.getNextPayFormatted() }}</td>
+            <td>{{ transfer.getFrequencyDescriptor() | titlecase }}</td>
+            <td>{{ transfer.getType() | titlecase }}</td>
+            <td>{{ transfer.getAmount().inDollars() | currency }}</td>
         </tr>
-    </thead>
-    <tbody></tbody>
+    </tbody>
 </table>
 <h3 class="mt-5">Card</h3>
-<table class="table">
+<table class="table" *ngIf="recurringCard.length>0; else empty">
     <thead>
         <tr>
             <td>ID</td>
             <td>Member</td>
-            <td>From</td>
-            <td>To</td>
-            <td>Frequency</td>
             <td>Started</td>
-            <td>Interval</td>
+            <td>Next</td>
+            <td>Frequency</td>
             <td>Amount</td>
         </tr>
     </thead>
-    <tbody></tbody>
+    <tbody>
+        <tr *ngFor="let card of recurringCard">
+            <td>{{card.getTransactionID()}}</td>
+            <td>{{card.getMember()?.getFullname()}}</td>
+            <td>{{card.getStartDateFormatted()}}</td>
+            <td>{{card.getNextPayFormatted()}}</td>
+            <td>{{card.getFrequencyDescriptor() | titlecase}}</td>
+            <td>{{card.getAmount().inDollars() | currency}}</td>
+        </tr>
+    </tbody>
 </table>
 <h3 class="mt-5">e-Transfer (transfer-out)</h3>
-<table class="table">
+<table class="table" *ngIf="recurringEmt.length>0; else empty">
     <thead>
         <tr>
             <td>ID</td>
             <td>Member</td>
-            <td>From</td>
-            <td>To</td>
-            <td>Frequency</td>
+            <td>Recipient</td>
             <td>Started</td>
-            <td>Interval</td>
+            <td>Frequency</td>
             <td>Amount</td>
         </tr>
     </thead>
     <tbody></tbody>
 </table>
+<ng-template #empty>
+    <p class="text-center">You have no recurring transfers setup.</p>
+</ng-template>

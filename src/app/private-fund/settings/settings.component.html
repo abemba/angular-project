@@ -20,6 +20,9 @@
             <br>
             <input [(ngModel)]="fundName" class="form-control" type="text" name="nickname" value="">
         </div>
-        <button mat-flat-button class="form-control mt-3" color="accent" [disabled]="fundName.length==0" (click)="updateName()">Update</button>
+        <button [appLoadingIcon]="isLoading" mat-flat-button class="form-control mt-3" color="accent" [disabled]="fundName.length==0" (click)="updateName()">Update</button>
     </div>
+</div>
+<div class="d-flex justify-content-end mt-5">
+    <button [appLoadingIcon]="isLoading" (click)="archive()" mat-flat-button>Archive</button>
 </div>

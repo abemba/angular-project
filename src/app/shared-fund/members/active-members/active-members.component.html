@@ -1,1 +1,15 @@
-<p>active-members works!</p>
+<h3>Active members</h3>
+<table class="table">
+    <thead>
+    <tr>
+        <td>Name</td>
+        <td>Member since</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let member of members">
+        <td>{{ member.getFullname() }}</td>
+        <td>{{ member.getDateJoinedFormatted() }}</td>
+    </tr>
+    </tbody>
+</table>

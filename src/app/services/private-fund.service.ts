@@ -1,12 +1,13 @@
-import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { map, Observable, tap } from 'rxjs';
-import { AlgofameHttpContext } from '../utils/context';
+import { DefinedHttpContexts} from '../utils/context';
 import { FundGoal } from '../utils/fund-goal';
-import { Links } from '../utils/links';
-import { CommonService } from './common.service';
-import { Fund, FundService } from './fund.service';
+import { FundService } from './fund.service';
+import {Fund} from "../utils/classes/fund";
+import {getEndpoint} from "../utils/endpoints";
+import {Figure} from "../utils/classes/figure";
+import * as moment from 'moment';
+import {Goal} from "../utils/classes/goal";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class PrivateFundService extends FundService {
 
   /**
    * Returns a list of private funds that belongs to the curren user
-   * @returns 
+   * @returns
    */
   override getList(): Observable<PrivateFund[]>{
     return new Observable((observer)=>{
@@ -27,11 +28,11 @@ export class PrivateFundService extends FundService {
     });
   }
 
-  
+
   getById(privateFundID:any): Observable<PrivateFund>{
     return new Observable((observer)=>{
       this.getList().subscribe(
-        fund_list => { 
+        fund_list => {
           observer.next( fund_list.find( item => item.is(privateFundID) ) )
         })
     });
@@ -41,7 +42,7 @@ export class PrivateFundService extends FundService {
     return new Observable(observer => {
       super
       .getFundFromPath('private-fund')
-      .subscribe( 
+      .subscribe(
         fund => {
           observer.next((new PrivateFund(this.http, fund.getData())))
         }
@@ -52,43 +53,39 @@ export class PrivateFundService extends FundService {
 
 
 /**
- * 
+ *
  */
 export class PrivateFund extends Fund {
 
   public hasActiveGoal(): boolean{
-    return this.fundData?.locked
+      const goal = this.getGoal();
+      if(goal instanceof Goal){
+          if(!goal.isAchieved()){
+              return true;
+          }
+      }
+    return false;
   }
 
   public getGoalType(): string {
     return this.fundData?.lock_mechanism
   }
 
-  public getGoalStatement(): string{
-    return ''
+
+  public getGoal (): Goal | null {
+      if(this.fundData.goal){
+        return new Goal(this.fundData.goal);
+      }else{
+          return null;
+      }
   }
 
-  public getGoalTarget(): string | number {
-    if(this.fundData?.lock_mechanism=="BALANCE"){
-      return this.fundData?.latest_lock?.condition_value/100
-    }
-    return this.fundData?.latest_lock?.condition_value
+  public setTimeGoal(time: moment.Moment){
+      return this.http.post(getEndpoint("funds.private.set_time_goal", {id: this.getId()}), { target_time: time.format("YYYY-MM-DD")}, {context: new DefinedHttpContexts().refresh().grant()})
+  };
+
+  public setBalanceGoal(amount: Figure){
+      return this.http.post(getEndpoint("funds.private.set_balance_goal", {id: this.getId()}), { target_balance: amount.inCents() }, {context: new DefinedHttpContexts().refresh().grant()})
   }
 
-  public setGoal(goal:FundGoal): Observable<any>{
-    return this.http
-    .post<any>(Links.SET_GOAL.replace(":id",this.fundID.toString()),goal,
-    {
-      context: new HttpContext().set(AlgofameHttpContext.REFRESH, AlgofameHttpContext.REFRESH.defaultValue())
-    });
-  }
-
-  public updateFundName(newName:string){
-    return this.http.patch(Links.PRIVATE_FUND_URL.replace(":id",this.fundID.toString()),{"nickname":newName},
-    {
-      context: new HttpContext().set(AlgofameHttpContext.REFRESH, AlgofameHttpContext.REFRESH.defaultValue() )
-    }).pipe(map((data)=>{ 
-      this.fundData.nickname=newName; return data;
-    }))
-  }
 }

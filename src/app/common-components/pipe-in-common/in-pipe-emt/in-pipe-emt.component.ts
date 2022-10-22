@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonService } from 'src/app/services/common.service';
+import {FundMember} from "../../../utils/classes/fund-member";
 
 @Component({
   selector: 'app-in-pipe-emt',
@@ -8,10 +9,8 @@ import { CommonService } from 'src/app/services/common.service';
 })
 export class InPipeEmtComponent implements OnInit {
 
-  @Input() challenge!:  String | undefined;
-  @Input() response!: String | undefined
-  @Input() email!: String  | undefined
-  constructor() { 
+  @Input() member!: FundMember | undefined
+  constructor() {
   }
 
 

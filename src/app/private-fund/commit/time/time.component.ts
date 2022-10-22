@@ -3,7 +3,8 @@ import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
 import * as moment from 'moment';
 import { CommonService } from 'src/app/services/common.service';
 import { PrivateFund, PrivateFundService } from 'src/app/services/private-fund.service';
-import { GoalType } from 'src/app/utils/goal-type';
+import {TimeComponentState} from "../../../utils/types/time-component-state";
+import {GrantCancelledException} from "../../../services/grant.service";
 
 @Component({
   selector: 'app-time',
@@ -12,34 +13,42 @@ import { GoalType } from 'src/app/utils/goal-type';
 })
 export class TimeComponent implements OnInit {
 
-  public min_date = moment();
+  public min_date = moment().add("1","day");
   public max_date = moment().add(60,'years');
+  public selected_date:  moment.Moment | null = this.min_date;
+  public dateClass: MatCalendarCellClassFunction<moment.Moment> = (cell,view)=> '';
+  public state: TimeComponentState = "init"
+  private fund!: PrivateFund;
+  public isLoading: boolean = false;
 
-  public selected_date:  any;
-
-  public state: string =""
-
-  public dateClass: MatCalendarCellClassFunction<moment.Moment> = (cell,view)=>{
-    
-    return '';
-  }
-  
-  
-  private fund!: PrivateFund
-  
   constructor(private privateFund:PrivateFundService, private common:CommonService) {
-    this.privateFund.getFundFromPath().subscribe(fund=>{this.fund=fund})
+    this.privateFund.getFundFromPath().subscribe(fund=> this.fund = fund)
   }
 
   ngOnInit(): void {
   }
 
-  showConfirm(){
-    this.state="confirm"
+  confirm(){
+      this.isLoading = true;
+      if(this.selected_date){
+          this.fund.setTimeGoal(this.selected_date).subscribe({
+              next: () => {
+                  this.isLoading = false
+                  this.update('success')
+              },
+              error: error => {
+                  this.isLoading = false
+                  if(error instanceof GrantCancelledException){
+                      return;
+                  }
+                  this.update('error')
+              }
+          })
+      }
   }
 
-  confirm(){
-    this.fund.setGoal({type:GoalType.TIME, target:this.selected_date.format("MMM D, YYYY")}).subscribe()
+  update(state: TimeComponentState){
+      this.state = state;
   }
 
 }

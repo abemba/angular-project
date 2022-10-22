@@ -1,22 +1,69 @@
-<table class="table  table-hover">
-    <thead>
+<ng-container *ngIf="transactions.length>0; else transactionempty">
+    <table *ngIf="!selectedTransaction; else detail" class="table  table-hover">
+        <thead>
         <tr>
             <td>Date</td>
+            <td>ID</td>
             <td>Member</td>
-            <td>Description</td>
             <td>Inflow</td>
             <td>Outflow</td>
             <td>Balance</td>
         </tr>
-    </thead>
-    <tbody>
+        </thead>
+        <tbody>
         <tr *ngFor="let item of transactions">
             <td>{{ item.getDate() | date }}</td>
+            <td class="text-primary simple-link" (click)="onClickShowItem(item)">{{ item.getTransactionNumber() }}</td>
             <td>{{ fund?.findMemberByGridAccountUserId(item.getGridAccountUserId())?.getFullname() }}</td>
-            <td>{{ item.getDescription() }}</td>
-            <td class="text-success"> {{ item.isDeposit() ? '+':''  }} {{ item.isDeposit() ? (item.getAmount().inDollars()|currency):''}}</td>
-            <td>{{ item.isWithdraw() ? '-':'' }} {{ item.isWithdraw() ? (item.getAmount().inDollarsAbsolute()|currency):'' }}</td>
+            <td class="text-success"> {{ item.isDeposit() ? '+' : ''  }} {{ item.isDeposit() ? (item.getAmount().inDollars()|currency) : ''}}</td>
+            <td>{{ item.isWithdraw() ? '-' : '' }} {{ item.isWithdraw() ? (item.getAmount().inDollarsAbsolute()|currency) : '' }}</td>
             <td>{{item.getBalance().inDollars() | currency}}</td>
         </tr>
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</ng-container>
+
+<ng-template #detail>
+    <ng-container *ngIf="selectedTransaction">
+        <h4 class="text-capitalize fs-4 fw-lighter">{{ selectedTransaction?.getDescription() }}</h4>
+        <div class="list-group mt-4">
+            <div class="list-group-item d-flex justify-content-between">
+                <span>Amount</span>
+                <span> {{ selectedTransaction?.getAmount()?.inDollarsAbsolute() | currency }} </span>
+            </div>
+            <div class="list-group-item d-flex justify-content-between">
+                <span>Type</span>
+                <span>{{ selectedTransaction.getAmount().inCents() > 0 ? 'Transfer-in' : 'Transfer-out' }}</span>
+            </div>
+            <div class="list-group-item d-flex justify-content-between">
+                <span>Method</span>
+                <span>{{ selectedTransaction?.getDescription() }}</span>
+            </div>
+            <div class="list-group-item d-flex justify-content-between">
+                <span>Transaction ID</span>
+                <span>{{ selectedTransaction?.getTransactionNumber() }} </span>
+            </div>
+            <div class="list-group-item d-flex justify-content-between">
+                <span>Member</span>
+                <span>{{ fund?.findMemberByGridAccountUserId(selectedTransaction.getGridAccountUserId())?.getFullname() }}</span>
+            </div>
+            <ng-container *ngIf="selectedTransactionDetails | async as records">
+                <div class="mt-3"></div>
+                <div *ngFor="let record of records" class="list-group-item d-flex justify-content-between">
+                    <span>{{ record[0] }}</span>
+                    <span>{{ record[1] }}</span>
+                </div>
+            </ng-container>
+        </div>
+        <div class="mt-3">
+            <button (click)="backFromDetail()" color="accent" mat-flat-button>Back</button>
+        </div>
+    </ng-container>
+</ng-template>
+
+<ng-template #transactionempty>
+    <div class="text-center">
+        <p class="fs-6 fw-light">There are no transaction.</p>
+        <button mat-flat-button color="accent" [routerLink]="transfer_in_link">+ transfer-in</button>
+    </div>
+</ng-template>

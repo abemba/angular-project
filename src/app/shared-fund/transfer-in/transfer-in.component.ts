@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {SharedFund, SharedFundService} from "../../services/shared-fund.service";
 
 @Component({
   selector: 'app-transfer-in',
@@ -7,7 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TransferInComponent implements OnInit {
 
-  constructor() { }
+    fund: SharedFund | null = null;
+
+  constructor(fundService: SharedFundService) {
+      fundService.getFundFromPath().subscribe(value => {
+          this.fund = value
+      })
+  }
 
   ngOnInit(): void {
   }

@@ -19,31 +19,6 @@ import { MetricComponent } from './commit/metric/metric.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
-const routes: Routes = 
-[
-  { path:"private-funds/:id", component:IndexComponent, 
-  children:
-    [
-      {outlet:"private-fund",path:'',component:TransactionsComponent},
-      {outlet:"private-fund", path:"transactions", component:TransactionsComponent},
-      {outlet:"private-fund", path:"transfer-out", component:TransferOutComponent},
-      {outlet:"private-fund", path:"transfer-in", component:TransferInComponent},
-      {outlet:"private-fund", path:"transactions", component:TransferInComponent},
-      {outlet:"private-fund", path:"pending", component:PendingTransactionsComponent},
-      {outlet:"private-fund", path:"recurring", component:RecurringTransactionsComponent},
-      {outlet:"private-fund", path:"commit", component:CommitComponent, 
-      children:
-      [
-        {outlet:"commit", path:"", component:BalanceComponent},
-        {outlet:"commit", path:"balance", component:BalanceComponent},
-        {outlet:"commit", path:"metric", component:BalanceComponent},
-        {outlet:"commit", path:"time", component:TimeComponent},
-      ]},
-      {outlet:"private-fund", path:"settings", component:SettingsComponent},
-    ], 
-  },
-]
-
 @NgModule({
   declarations: [
     TransactionsComponent,
@@ -60,7 +35,7 @@ const routes: Routes =
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes),
+    RouterModule,
     MatButtonModule,
     NgxStripeModule.forRoot("pk_test_O2qZBlZwaSiQe6CTRBvxKhQt"),
     FormsModule,

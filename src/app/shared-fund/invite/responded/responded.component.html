@@ -1,0 +1,22 @@
+<table class="table" *ngIf="respondedInvite.length>0; else nonpending">
+    <thead>
+    <tr>
+        <td>Invited on</td>
+        <td>Name</td>
+        <td>Email</td>
+        <td>Status</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let invite of respondedInvite">
+        <td>{{ invite.getDateFormatted() }}</td>
+        <td>{{ invite.getFullname() }}</td>
+        <td>{{ invite.getEmail() }}</td>
+        <td>{{ invite.getStatus() | titlecase }}</td>
+    </tr>
+    </tbody>
+</table>
+
+<ng-template #nonpending>
+    <p class="text-center">You have no responded member invitations.</p>
+</ng-template>

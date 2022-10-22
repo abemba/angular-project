@@ -1,13 +1,55 @@
-<div class="form-group">
-    <label>First Name</label>
-    <input type="text" class="form-control" >
-</div>
-<div class="form-group">
-    <label>Last Name</label>
-    <input type="text" class="form-control" >
-</div>
-<div class="form-group">
-    <label>Email</label>
-    <input type="email" class="form-control" >
-</div>
-<button mat-flat-button color="accent" class="mt-3">invite</button>
+<ng-container [ngSwitch]="state">
+    <ng-container *ngSwitchCase="'init'">
+        <ng-container *ngTemplateOutlet="init"></ng-container>
+    </ng-container>
+    <ng-container *ngSwitchCase="'error'">
+        <ng-container *ngTemplateOutlet="error"></ng-container>
+    </ng-container>
+    <ng-container *ngSwitchCase="'success'">
+        <ng-container *ngTemplateOutlet="success"></ng-container>
+    </ng-container>
+    <ng-container *ngSwitchCase="'alreadyamember'">
+        <ng-container *ngTemplateOutlet="alreadyamember"></ng-container>
+    </ng-container>
+</ng-container>
+
+<ng-template #init>
+    <div class="form-group">
+        <label>First Name *</label>
+        <input #firstNameField="ngModel" type="text" [(ngModel)]="inviteForm.first_name" class="form-control" required>
+    </div>
+    <div class="form-group mt-3">
+        <label>Last Name *</label>
+        <input #lastNameField="ngModel" [(ngModel)]="inviteForm.last_name" type="text" class="form-control" required>
+    </div>
+    <div class="form-group mt-3">
+        <label>Phone</label>
+        <input [(ngModel)]="inviteForm.phone" type="text" class="form-control" >
+    </div>
+    <div class="form-group mt-3">
+        <label>Email*</label>
+        <input #emailField="ngModel"  [(ngModel)]="inviteForm.email" type="email" class="form-control" email required>
+    </div>
+    <button [disabled]="firstNameField.invalid || lastNameField.invalid || emailField.invalid" [appLoadingIcon]="isLoading" (click)="invite()" mat-flat-button color="accent" class="mt-3 form-control">invite</button>
+</ng-template>
+
+
+<ng-template #alreadyamember>
+    <div class="text-center mt-3">
+        <span class="mdi mdi-48px mdi-emoticon-confused-outline text-danger"></span>
+        <p class="mt-3">Your invite could not be sent because the email is associated to a user who is already a member of this fund.</p>
+        <button (click)="updateState('init')" class="mt-3" mat-flat-button color="accent">try again</button>
+    </div>
+</ng-template>
+
+<ng-template #error>
+    <app-error (callback)="updateState('init')"></app-error>
+</ng-template>
+
+<ng-template #success>
+    <div class="text-center mt-3">
+        <span class="mdi mdi-48px mdi-emoticon-happy-outline text-success"></span>
+        <p class="mt-3">You invite has been sent.</p>
+        <button class="mt-3" (click)="updateState('init')" mat-flat-button color="accent">continue</button>
+    </div>
+</ng-template>

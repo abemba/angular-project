@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Transaction } from 'src/app/services/fund.service';
 import { PrivateFund, PrivateFundService } from 'src/app/services/private-fund.service';
 import { padZeros, transactionDescription } from 'src/app/utils/functions';
 import { TransactionType } from 'src/app/utils/transaction-type';
+import {Transaction} from "../../utils/classes/transaction";
 
 @Component({
   selector: 'app-transactions',
@@ -17,7 +17,7 @@ export class TransactionsComponent implements OnInit {
   state: String = ""
 
   public selectedTransactionDetails: Observable<any> | null = null;
-  
+
   public transactions: Transaction[] = []
   public selected_transaction!: Transaction;
   public transfer_in_link = [{outlets:{"private-fund":["transfer-in"]}}]
@@ -36,7 +36,7 @@ export class TransactionsComponent implements OnInit {
   }
 
   onClickShowItem(selected:Transaction){
-    this.selectedTransactionDetails = selected.fetchFormattedDetails() 
+    this.selectedTransactionDetails = selected.fetchFormattedDetails()
     this.selected_transaction = selected;
     this.onClickUpdateState('transactiondetail')
   }

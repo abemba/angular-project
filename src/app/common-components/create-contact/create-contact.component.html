@@ -1,0 +1,39 @@
+<ng-container [ngSwitch]="state">
+    <ng-container *ngSwitchCase="'init'">
+        <ng-container *ngTemplateOutlet="init"></ng-container>
+    </ng-container>
+    <ng-container *ngSwitchCase="'success'">
+        <ng-container *ngTemplateOutlet="success"></ng-container>
+    </ng-container>
+    <ng-container *ngSwitchCase="'error'">
+        <ng-container *ngTemplateOutlet="error"></ng-container>
+    </ng-container>
+</ng-container>
+
+<ng-template #init>
+    <div class="form-group">
+        <label>First name*</label>
+        <input class="form-control" type="text" #first="ngModel" [(ngModel)]="contactForm.first_name" required/>
+    </div>
+    <div class="form-group mt-3">
+        <label>Last name*</label>
+        <input class="form-control" type="text" #last="ngModel" [(ngModel)]="contactForm.last_name" required/>
+    </div>
+    <div class="form-group mt-3">
+        <label>Phone</label>
+        <input class="form-control" type="text" #last="ngModel" [(ngModel)]="contactForm.phone"/>
+    </div>
+    <div class="form-group mt-3">
+        <label>Email*</label>
+        <input class="form-control" type="email" #email="ngModel" [(ngModel)]="contactForm.email" email required />
+    </div>
+    <button color="accent" mat-flat-button (click)="create()" [disabled]="first.invalid || last.invalid || email.invalid" class="mt-5">
+        {{ edit ? 'update':'create'}}
+    </button>
+</ng-template>
+<ng-template #error>
+    <app-error (callback)="updateState('init')"></app-error>
+</ng-template>
+<ng-template #success>
+    <app-response-message message="{{edit ? 'Contact was updated successfully.' :'Contact was created successfully.'}}" (onContinue)="emitContinue()"></app-response-message>
+</ng-template>

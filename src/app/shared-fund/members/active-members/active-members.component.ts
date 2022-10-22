@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {SharedFundService} from "../../../services/shared-fund.service";
+import {FundMember} from "../../../utils/classes/fund-member";
 
 @Component({
   selector: 'app-active-members',
@@ -7,7 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ActiveMembersComponent implements OnInit {
 
-  constructor() { }
+    public members: FundMember[] = [];
+  constructor(sharedFundService: SharedFundService) {
+      sharedFundService.getFundFromPath().subscribe(fund => this.members = fund.getMembers())
+  }
 
   ngOnInit(): void {
   }

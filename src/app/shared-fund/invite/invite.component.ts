@@ -2,6 +2,8 @@ import { Component, OnInit, Type, ViewChild } from '@angular/core';
 import { SubViewDirective } from 'src/app/common-components/sub-view.directive';
 import { ExistingContactsComponent } from './existing-contacts/existing-contacts.component';
 import { NewContactComponent } from './new-contact/new-contact.component';
+import {PendingComponent} from "./pending/pending.component";
+import {RespondedComponent} from "./responded/responded.component";
 
 @Component({
   selector: 'app-invite',
@@ -11,12 +13,14 @@ import { NewContactComponent } from './new-contact/new-contact.component';
 export class InviteComponent implements OnInit {
 
   @ViewChild(SubViewDirective, {static:true})
-  subView!: SubViewDirective; 
+  subView!: SubViewDirective;
 
-  public menu: any[] = 
+  public menu: any[] =
   [
     {label:"New Contact", component: NewContactComponent},
     {label:"My Contacts", component: ExistingContactsComponent},
+    {label:"Pending", component: PendingComponent},
+    {label:"Responded", component: RespondedComponent},
   ]
 
   public active: string = ""

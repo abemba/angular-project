@@ -7,13 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyAccountComponent implements OnInit {
 
-  public menu: any[] = 
+  public menu: any[] =
   [
     {label:"Profile", link:'/my-account', options:{exact:true}, icon:"mdi-card-account-details-outline"},
     //{label:"verify", link:[{outlets:{"myaccount":['verify']}}], options:{exact:true}, icon:"mdi-check-circle-outline"},
     {label:"Email", link:[{outlets:{"myaccount":['email']}}], options:{exact:true}, icon:"mdi-email-outline"},
     {label:"Password", link:[{outlets:{"myaccount":['password']}}], options:{exact:true}, icon:"mdi-form-textbox-password"},
-    {label:"Payments", link:[{outlets:{"myaccount":['payments']}}], options:{exact:true}, icon:"mdi-bank-outline"},
+    //{label:"Payments", link:[{outlets:{"myaccount":['payments']}}], options:{exact:true}, icon:"mdi-bank-outline"},
     {label:"Contacts", link:[{outlets:{"myaccount":['contacts']}}], options:{exact:true}, icon:"mdi-contacts-outline"},
     {label:"Archives", link:[{outlets:{"myaccount":['archives']}}], options:{exact:true}, icon:"mdi-archive-outline"},
   ]

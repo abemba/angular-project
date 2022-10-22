@@ -1,7 +1,75 @@
-<div class="form-group">
-    <label>Select contact</label>
-    <select class="form-control" multiple>
-        <option *ngFor="let item of contacts">{{item.name}} - ({{item.email}})</option>
-    </select>
-</div>
-<button mat-flat-button color="accent" class="mt-2">invite</button>
+<ng-container *ngIf="contacts.length>0; else nocontacts">
+    <ng-container [ngSwitch]="state">
+        <ng-container *ngSwitchCase="'selectcontact'">
+            <ng-container *ngTemplateOutlet="selectcontacts"></ng-container>
+        </ng-container>
+        <ng-container *ngSwitchCase="'confirm'">
+            <ng-container *ngTemplateOutlet="confirm"></ng-container>
+        </ng-container>
+        <ng-container *ngSwitchCase="'error'">
+            <ng-container *ngTemplateOutlet="error"></ng-container>
+        </ng-container>
+        <ng-container *ngSwitchCase="'success'">
+            <ng-container *ngTemplateOutlet="success"></ng-container>
+        </ng-container>
+        <ng-container *ngSwitchCase="'alreadyamember'">
+            <ng-container *ngTemplateOutlet="alreadyamember"></ng-container>
+        </ng-container>
+    </ng-container>
+</ng-container>
+
+<ng-template #selectcontacts>
+    <div class="form-group">
+        <label>Select contact</label>
+        <select class="form-control" required #selectedContactElement="ngModel" [(ngModel)]="selectedContact">
+            <option *ngFor="let item of contacts" [ngValue]="item">{{item.getDescriptor()}} - ({{item.getEmail()}})</option>
+        </select>
+    </div>
+    <button mat-flat-button color="accent" class="mt-5 form-control" [disabled]="selectedContactElement.invalid" (click)="updateState('confirm')">invite</button>
+</ng-template>
+
+<ng-template #confirm>
+    <div class="list-group">
+        <div class="list-group-item d-flex justify-content-between">
+            <span>First name</span>
+            <span>{{ selectedContact?.getFirstName() }}</span>
+        </div>
+        <div class="list-group-item d-flex justify-content-between">
+            <span>Last name</span>
+            <span>{{ selectedContact?.getLastName() }}</span>
+        </div>
+        <div *ngIf="selectedContact?.getPhone()" class="list-group-item d-flex justify-content-between">
+            <span>Phone</span>
+            <span>{{ selectedContact?.getPhone() }}</span>
+        </div>
+        <div class="list-group-item d-flex justify-content-between">
+            <span>Email</span>
+            <span>{{ selectedContact?.getEmail() }}</span>
+        </div>
+    </div>
+    <button mat-flat-button color="accent" [appLoadingIcon]="isLoading" (click)="confirmContact()" class="form-control mt-5">Confirm</button>
+</ng-template>
+
+<ng-template #nocontacts>
+    <p class="text-center">You currently have no contacts.</p>
+</ng-template>
+
+<ng-template #error>
+    <app-error (callback)="updateState('selectcontact')"></app-error>
+</ng-template>
+
+<ng-template #success>
+    <div class="text-center mt-3">
+        <span class="mdi mdi-48px mdi-emoticon-happy-outline text-success"></span>
+        <p class="mt-3">Your invite has been sent.</p>
+        <button class="mt-3" (click)="updateState('selectcontact')" mat-flat-button color="accent">continue</button>
+    </div>
+</ng-template>
+
+<ng-template #alreadyamember>
+    <div class="text-center mt-3">
+        <span class="mdi mdi-48px mdi-emoticon-confused-outline text-danger"></span>
+        <p class="mt-3">Your invite could not be sent because the email is associated to a user who is already a member of this fund.</p>
+        <button (click)="updateState('selectcontact')" class="mt-3" mat-flat-button color="accent">try again</button>
+    </div>
+</ng-template>

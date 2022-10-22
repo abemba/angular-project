@@ -1,21 +1,18 @@
 <h3 class="fs-5 mb-0">Time</h3>
-<p class="mb-3">Select a desired date that you would like to go without touching the funds.</p>
+<p class="mb-5">Select a desired date that you would like to go without touching the funds.</p>
 
 <ng-container [ngSwitch]="state">
     <ng-container *ngSwitchCase="'confirm'">
         <h4>Confirm date</h4>
-        <div class="card">
-            <div class="card-body">
-                <div class="list-group">
-                    <div class="list-group-item d-flex justify-content-between">
-                        <span>Date</span>
-                        <span>{{selected_date | date:'mediumDate'}}</span>
-                    </div>
-                </div>
+        <div class="list-group">
+            <div class="list-group-item d-flex justify-content-between">
+                <span>Date</span>
+                <span>{{selected_date?.format("DD MMMM, YYYY")}}</span>
             </div>
         </div>
-        <button class="btn btn-success form-control mt-3" (click)="confirm()">confirm</button>
+        <button [appLoadingIcon]="isLoading" class="btn form-control mt-5" mat-flat-button color="accent" (click)="confirm()">confirm</button>
     </ng-container>
+
     <ng-container *ngSwitchDefault>
         <h4>Select date</h4>
         <div class="d-grid gap-3 mb-5">
@@ -24,7 +21,23 @@
                     <mat-calendar [dateClass]="dateClass" [minDate]="min_date" [maxDate]="max_date" [(selected)]="selected_date"></mat-calendar>
                 </div>
             </div>
-            <button (click)="showConfirm()" class="form-control mt-3" mat-flat-button color="accent" [disabled]="selected_date ? false:true">confirm</button>
+            <button (click)="update('confirm')" class="form-control mt-3" mat-flat-button color="accent" [disabled]="selected_date ? false:true">confirm</button>
+        </div>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'success'">
+        <div class="text-center">
+            <span class="mdi mdi-emoticon-happy-outline mdi-48px text-success"></span>
+            <p>Goal has been created successfully.</p>
+            <button class="btn btn-warning mt-5" (click)="update('init')">continue</button>
+        </div>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'error'">
+        <div class="text-center mt-3">
+            <span class="mdi mdi-48px mdi-emoticon-confused-outline text-danger"></span>
+            <p class="mt-3">The system has experience a critical error. Please try again later.</p>
+            <button class="mt-5" mat-flat-button color="accent" (click)="update('init')">try again</button>
         </div>
     </ng-container>
 </ng-container>

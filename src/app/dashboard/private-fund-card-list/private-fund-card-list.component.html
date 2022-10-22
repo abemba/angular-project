@@ -17,11 +17,11 @@
                     <td>{{ fund.getFundNumber() }}</td>
                     <td>
                         <a routerLink="/private-funds/{{ fund.getId() }}">
-                            {{ fund.getFundName() }}
+                            {{ fund.getFundName() | titlecase }}
                         </a>
                     </td>
                     <td>{{ fund.getBalance().inDollars() | currency }}</td>
-                    <td>{{ fund.hasActiveGoal() ? fund.getGoalType() : 'N/A' }}</td>
+                    <td>{{ fund.hasActiveGoal() ? fund.getGoal()?.getTarget() : 'N/A' }}</td>
                 </tr>
             </tbody>
         </table>

@@ -1,0 +1,60 @@
+<h3>Consent Policy</h3>
+<ng-container [ngSwitch]="state">
+    <ng-container *ngSwitchCase="'init'">
+        <ng-container *ngTemplateOutlet="init"></ng-container>
+    </ng-container>
+    <ng-container *ngSwitchCase="'error'">
+        <ng-container *ngTemplateOutlet="error"></ng-container>
+    </ng-container>
+    <ng-container *ngSwitchCase="'success'">
+        <ng-container *ngTemplateOutlet="success"></ng-container>
+    </ng-container>
+    <ng-container *ngSwitchCase="'pending'">
+        <ng-container *ngTemplateOutlet="pending"></ng-container>
+    </ng-container>
+</ng-container>
+
+<ng-template #init>
+    <div class="list-group">
+        <div class="list-group-item">
+            <span>Invite</span>
+            <div class="form-group">
+                <select class="form-control" [(ngModel)]="form.INVITE">
+                    <option *ngFor="let consent of consentTypes"
+                            [ngValue]="consent.key">{{ consent.value | titlecase}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="list-group-item">
+            <span>Transfer-out</span>
+            <div class="form-group">
+                <select class="form-control" [(ngModel)]="form.TRANSFER_OUT">
+                    <option *ngFor="let consent of consentTypes"
+                            [ngValue]="consent.key">{{ consent.value | titlecase}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="list-group-item">
+            <span>Changes to policies</span>
+            <div class="form-group">
+                <select class="form-control" [(ngModel)]="form.UPDATE_POLICY">
+                    <option *ngFor="let consent of consentTypes"
+                            [ngValue]="consent.key">{{ consent.value | titlecase}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <button class="form-control mt-3" mat-flat-button color="accent" [appLoadingIcon]="isLoading" (click)="update()">
+        Update
+    </button>
+</ng-template>
+
+<ng-template #error>
+    <app-error (callback)="updateState('init')"></app-error>
+</ng-template>
+<ng-template #success>
+    <app-response-message message="Policy was updated successfully and is now effective." (onContinue)="updateState('init')"></app-response-message>
+</ng-template>
+<ng-template #pending>
+    <app-response-message icon="mdi-alert-circle-outline text-warning" message="Pending approval." (onContinue)="updateState('init')"></app-response-message>
+</ng-template>

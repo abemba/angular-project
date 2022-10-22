@@ -1,1 +1,5 @@
-<app-pipe-out-common></app-pipe-out-common>
+<app-pipe-out-common *ngIf="!fund?.hasActiveGoal(); else commitComponent"></app-pipe-out-common>
+<ng-template #commitComponent>
+    <app-method-not-available></app-method-not-available>
+    <app-commit></app-commit>
+</ng-template>

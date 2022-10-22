@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   loading: boolean = false;
 
 
-  constructor(private auth: AuthService, private common: CommonService) { }
+  constructor(private auth: AuthService, private common: CommonService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.auth.login(this.email,this.password).subscribe(
       {
+          next: value => this.router.navigate(['/']) ,
         error: (error) => {
           this.showAuthErrorMsg = true;
           if(error.status==0){

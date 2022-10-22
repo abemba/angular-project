@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Fund } from 'src/app/services/fund.service';
 import { FundMenuItem } from 'src/app/utils/fund-menu-item';
+import {Fund} from "../../utils/classes/fund";
 
 @Component({
   selector: 'app-fund-menu',

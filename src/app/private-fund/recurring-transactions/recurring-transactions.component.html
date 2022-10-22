@@ -1,25 +1,25 @@
 <h4 class="fw-light">Card Payment</h4>
-<table class="table" *ngIf="recurring_items.card?.length>0; else nodata">
+<table class="table" *ngIf="cardTransfers.length>0; else nodata">
     <thead>
         <tr>
-            <td>Started</td>
             <td>ID</td>
+            <td>Started</td>
+            <td>Next</td>
             <td>Frequency</td>
             <td>Interval</td>
-            <td>Brand</td>
-            <td>Card Number</td>
+            <td>Card</td>
             <td>Amount</td>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let item of recurring_items.card; let i=index">
-            <td>{{item.start_date | date:'mediumDate'}}</td>
-            <td class="text-primary">{{pad(item.id)}}</td>
-            <td>{{item.frequency}}</td>
-            <td>{{item.interval}}</td>
-            <td>{{getBrand(item.card_token)}}</td>
-            <td>***{{getLast4(item.card_token)}}</td>
-            <td>{{item.amount/100|currency}}</td>
+        <tr *ngFor="let item of cardTransfers; let i=index">
+            <td class="text-primary">{{ item.getTransactionID() }}</td>
+            <td>{{ item.getStartDateFormatted() }}</td>
+            <td>{{ item.getNextPayFormatted() }}</td>
+            <td>{{ item.getFrequencyDescriptor() | titlecase }}</td>
+            <td>{{ item.getInterval() }}</td>
+            <td>{{ item.getCard().getDescriptor() }}</td>
+            <td>{{ item.getAmount().inDollars() |currency }}</td>
         </tr>
     </tbody>
 </table>
@@ -49,27 +49,27 @@
     </tbody>
 </table>
 <h4 class="mt-5 fw-light">Bank Transfers</h4>
-<table class="table" *ngIf="recurring_items.eft?.length>0; else nodata">
+<table class="table" *ngIf="bankTransfers.length>0; else nodata">
     <thead>
         <tr>
-            <td>Started</td>
             <td>ID</td>
-            <td>From</td>
-            <td>To</td>
+            <td>Started</td>
+            <td>Next</td>
             <td>Frequency</td>
             <td>Interval</td>
+            <td>Type</td>
             <td>Amount</td>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let item of recurring_items.eft">
-            <td>{{date(item.start_date)| date:'mediumDate'}}</td>
-            <td class="text-primary">RC{{pad(item.id)}}</td>
-            <td>{{bankTransferTargetName(item.type,true)}}</td>
-            <td>{{bankTransferTargetName(item.type,false)}}</td>
-            <td>{{intToDays(item.frequency)}}</td>
-            <td>{{item.interval}}</td>
-            <td>{{item.amount/100|currency}}</td>
+        <tr *ngFor="let item of bankTransfers">
+            <td class="text-primary">{{ item.getTransactionID() }}</td>
+            <td>{{ item.getStartDateFormatted() }}</td>
+            <td>{{ item.getNextPayFormatted() }}</td>
+            <td>{{ item.getFrequencyDescriptor() | titlecase}}</td>
+            <td>{{ item.getInterval() }}</td>
+            <td>{{ item.getType() | titlecase  }}</td>
+            <td>{{ item.getAmount().inDollars() | currency}}</td>
         </tr>
     </tbody>
 </table>

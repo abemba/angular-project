@@ -9,6 +9,7 @@ import webStorage from 'webstoragejs';
 import { GrantService } from './grant.service';
 import { AlgofameHttpContext } from '../utils/context';
 import { CommonService } from './common.service';
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class AuthService {
   private auth_token: string = '';
   protected authStore: any = webStorage({ namespace: 'algofame::auth' });
 
-  constructor(private http: HttpClient, private grant: GrantService, private common: CommonService) {
+  constructor(private http: HttpClient, private grant: GrantService, private common: CommonService, private router: Router) {
     this.restoreAuthToken()
   }
 
@@ -41,10 +42,11 @@ export class AuthService {
     this.authStore.clear()
     this.auth_token = '';
     this.common.clearDataOnLogout();
+    this.router.navigate(['login'])
   }
 
   private setAuthToken(token: string) {
-    this.auth_token = token; 
+    this.auth_token = token;
     this.authStore.setItem(AuthTokenTypes.APPLICATION_ACCESS.key,token)
   }
 
@@ -62,7 +64,7 @@ export class AuthService {
   public updateEmail (newEmail: string) {
     return this.http.post(Endpoints.AUTH.UPDATE_EMAIL,{email: newEmail})
   }
-  
+
   public updatePassword (data: any) {
     return this.http.post(Endpoints.AUTH.UPDATE_PASSWORD,data)
   }

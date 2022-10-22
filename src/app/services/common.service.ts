@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Endpoints } from '../utils/endpoints';
+import {Contact} from "../utils/classes/contact";
 
 @Injectable({
   providedIn: 'root',
@@ -80,6 +81,23 @@ export class CommonService {
     this.fetchSetupData();
   }
 
+    /**
+     * Contact data
+     */
+  getContacts (): Observable<Contact[]> {
+      return new Observable( observer => {
+          this.loadSetupData().subscribe(
+              {
+                  next: value => observer.next( value?.contacts?.map((data: any) => new Contact(data, this.http)))
+              }
+          )
+      })
+  }
+
+  newContactInstance (data: any) {
+      return new Contact(data, this.http);
+  }
+
   /**
    * Profile Data
    * @returns
@@ -97,7 +115,7 @@ export class CommonService {
    * Pipes
    * @returns
    */
-   public getFundPipes() {
+   public getFundPipes(): Observable<any> {
     return new Observable((observer) => {
       this.setupObserver.subscribe((data) => {
         observer.next(data.pipes);

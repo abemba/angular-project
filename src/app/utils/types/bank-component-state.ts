@@ -1,0 +1,1 @@
+export type BankComponentState = "pendingapproval" | "nobank" | 'error' | 'insf' | "addbank" | "addbankconfirm" | "addbanksuccess" | "addbankfailed" | "chargebank" | "chargebankconfirm" | "chargebanksuccess" | "chargebankfailed" | "init"

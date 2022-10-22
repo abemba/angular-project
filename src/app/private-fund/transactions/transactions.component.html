@@ -29,13 +29,13 @@
                 <td>{{ item.getDescription() }}</td>
                 <td class="text-success">
                     <ng-container *ngIf="item.isDeposit()">
-                        {{ item.getSign() }} 
+                        {{ item.getSign() }}
                         {{ item.getAmount().inDollarsAbsolute() | currency }}
                     </ng-container>
                 </td>
                 <td>
                     <ng-container *ngIf="item.isWithdraw()">
-                        {{ item.getSign() }} 
+                        {{ item.getSign() }}
                         {{ item.getAmount().inDollarsAbsolute() | currency }}
                     </ng-container>
                 </td>
@@ -82,5 +82,4 @@
         <p class="fs-6 fw-light">You have no transaction.</p>
         <button mat-flat-button color="accent" [routerLink]="transfer_in_link">+ transfer-in</button>
     </div>
-
 </ng-template>

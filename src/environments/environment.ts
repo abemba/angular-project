@@ -1,9 +1,12 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-
 export const environment = {
-  production: false
+    production: false,
+    // STRIPE test key pk_test_O2qZBlZwaSiQe6CTRBvxKhQt
+    // STRIPE live key pk_live_B4uBuK4S72gPaLmTjd69EEHr
+    STRIPE_PUBLIC_KEY: "pk_live_B4uBuK4S72gPaLmTjd69EEHr",
+    apiEndpoint: "http://localhost/api/"
 };
 
 /*
