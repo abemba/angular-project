@@ -3,9 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 export const environment = {
     production: false,
-    // STRIPE test key pk_test_O2qZBlZwaSiQe6CTRBvxKhQt
-    // STRIPE live key pk_live_B4uBuK4S72gPaLmTjd69EEHr
-    STRIPE_PUBLIC_KEY: "pk_live_B4uBuK4S72gPaLmTjd69EEHr",
+    STRIPE_PUBLIC_KEY: "pk_test_O2qZBlZwaSiQe6CTRBvxKhQt",
     apiEndpoint: "http://localhost/api/"
 };
 
